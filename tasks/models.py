@@ -112,3 +112,23 @@ class Team(models.Model):
     def __str__(self):
         return self.name
 
+class Project(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True)
+    deadline = models.DateField()
+
+    teams = models.ManyToManyField(
+        Team,
+        related_name="projects"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "project"
+        verbose_name_plural = "projects"
+        ordering = ["-deadline"]
+
+    def __str__(self):
+        return self.name
