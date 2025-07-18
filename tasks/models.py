@@ -100,3 +100,15 @@ class Worker(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.get_full_name()})"
 
+class Team(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    members = models.ManyToManyField(Worker, related_name="teams")
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "team"
+        verbose_name_plural = "teams"
+
+    def __str__(self):
+        return self.name
+
