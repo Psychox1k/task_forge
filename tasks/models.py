@@ -10,6 +10,84 @@ class TaskType(models.Model):
     def __str__(self):
         return self.name
 
+class Position(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
+class Worker(AbstractUser):
+
+    position = models.ForeignKey(
+        Position,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="workers"
+    )
+
+
+
+    class Meta:
+        verbose_name = "worker"
+        verbose_name_plural = "workers"
+
+    @property
+    def completed_tasks(self):
+        return self.assigned_tasks.filter(is_completed=True)
+
+    @property
+    def pending_tasks(self):
+        return self.assigned_tasks.filter(is_completed=False)
+
+    def __str__(self):
+        return f"{self.username} ({self.get_full_name()})"
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Team(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    members = models.ManyToManyField(Worker, related_name="teams")
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "team"
+        verbose_name_plural = "teams"
+
+    def __str__(self):
+        return self.name
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True)
+    deadline = models.DateField()
+
+    teams = models.ManyToManyField(
+        Team,
+        related_name="projects"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "project"
+        verbose_name_plural = "projects"
+        ordering = ["-deadline"]
+
+    def __str__(self):
+        return self.name
+
+
 class Task(models.Model):
 
     PRIORITY_CHOICES = [
@@ -63,72 +141,4 @@ class Task(models.Model):
     def __str__(self):
         return f"{self.name} (priority: {self.priority})"
 
-class Position(models.Model):
-    name = models.CharField(max_length=255, unique=True)
 
-    class Meta:
-        ordering = ["name"]
-
-    def __str__(self):
-        return self.name
-
-
-class Worker(AbstractUser):
-
-    position = models.ForeignKey(
-        Position,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="workers"
-    )
-
-
-
-    class Meta:
-        verbose_name = "worker"
-        verbose_name_plural = "workers"
-
-    @property
-    def completed_tasks(self):
-        return self.assigned_tasks.filter(is_completed=True)
-
-    @property
-    def pending_tasks(self):
-        return self.assigned_tasks.filter(is_completed=False)
-
-    def __str__(self):
-        return f"{self.username} ({self.get_full_name()})"
-
-class Team(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    members = models.ManyToManyField(Worker, related_name="teams")
-
-    class Meta:
-        ordering = ["name"]
-        verbose_name = "team"
-        verbose_name_plural = "teams"
-
-    def __str__(self):
-        return self.name
-
-class Project(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    description = models.TextField(blank=True)
-    deadline = models.DateField()
-
-    teams = models.ManyToManyField(
-        Team,
-        related_name="projects"
-    )
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = "project"
-        verbose_name_plural = "projects"
-        ordering = ["-deadline"]
-
-    def __str__(self):
-        return self.name
