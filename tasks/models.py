@@ -69,6 +69,12 @@ class Team(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True)
+    budget = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
     deadline = models.DateField()
 
     teams = models.ManyToManyField(
