@@ -1,9 +1,20 @@
 # tasks/urls.py
 from django.urls import path
-from . import views
 
-app_name = "tasks"
+from .views import (
+    index,
+    WorkerListView,
+    ProjectListView,
+    TeamListView,
+    TaskListView,
+)
 
 urlpatterns = [
-    path("", views.index, name="index"),  # головна сторінка tasks
+    path("", index, name="index"),
+    path("workers/", WorkerListView.as_view(), name="worker-list"),
+    path("projects/", ProjectListView.as_view(), name="project-list"),
+    path("teams/", TeamListView.as_view(), name="team-list"),
+    path("tasks/", TaskListView.as_view(), name="task-list")
 ]
+
+app_name = "task"
