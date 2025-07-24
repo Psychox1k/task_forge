@@ -1,10 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends 'layouts/base-presentation.html' %}
 
-</body>
-</html>
+{% block title %}Workers{% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+  <div class="container my-5">
+    <div class="card shadow rounded-4 w-75 mx-auto">
+      <div class="card-body p-4">
+        <h4 class="mb-4">Project List</h4>
+        <div class="table-responsive">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Project</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Budget</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Completion</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Deadline</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for project in project_list %}
+              <tr>
+                <td class="text-center">
+                  <h6 class="mb-0 text-xs">{{ project.name }}</h6>
+                </td>
+                <td class="text-center">
+                  <p class="text-xs font-weight-bold mb-0">
+                    {% if project.budget %}
+                      ${{ project.budget }}
+                    {% else %}
+                      —
+                    {% endif %}
+                  </p>
+                </td>
+                <td class="align-middle text-center">
+                  <div class="d-flex align-items-center justify-content-center">
+                    <span class="me-2 text-xs">{{ project.completion_percentage }}%</span>
+                    <div class="progress w-50">
+                      <div class="progress-bar bg-info" role="progressbar"
+                        style="width: {{ project.completion_percentage }}%;"
+                        aria-valuenow="{{ project.completion_percentage }}"
+                        aria-valuemin="0" aria-valuemax="100">
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <span class="text-sm text-secondary">{{ project.deadline|date:"Y-m-d" }}</span>
+                </td>
+
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
