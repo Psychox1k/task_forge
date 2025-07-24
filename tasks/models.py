@@ -90,6 +90,14 @@ class Project(models.Model):
         verbose_name_plural = "projects"
         ordering = ["-deadline"]
 
+    @property
+    def completion_percentage(self):
+        total = self.tasks.count()
+        if total == 0:
+            return 0
+        completed = self.tasks.filter(is_completed=True).count()
+        return round((completed / total) * 100)
+
     def __str__(self):
         return self.name
 
