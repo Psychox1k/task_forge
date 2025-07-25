@@ -56,6 +56,14 @@ class Tag(models.Model):
 class Team(models.Model):
     name = models.CharField(max_length=255, unique=True)
     members = models.ManyToManyField(Worker, related_name="teams")
+    description = models.TextField(blank=True)
+    lead = models.ForeignKey(
+        Worker,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="leading_teams"
+    )
 
     class Meta:
         ordering = ["name"]
@@ -64,6 +72,9 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+
+    def members_count(self):
+        return self.members.count()
 
 
 class Project(models.Model):
