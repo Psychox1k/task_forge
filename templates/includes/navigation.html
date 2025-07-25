@@ -9,38 +9,32 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navigation">
-      <ul class="navbar-nav navbar-nav-hover mx-auto">
-
-        <li class="nav-item px-3">
-          <a class="nav-link" href="{% url 'tasks:team-list' %}">
-            Teams
-          </a>
+     <ul class="navbar-nav d-flex justify-content-center align-items-center flex-grow-1">
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="{% url 'tasks:team-list' %}">Teams</a>
         </li>
-
-        <li class="nav-item px-3">
-          <a class="nav-link" href="{% url 'tasks:worker-list' %}">
-            Workers
-          </a>
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="{% url 'tasks:worker-list' %}">Workers</a>
         </li>
-
-        <li class="nav-item px-3">
-          <a class="nav-link" href="{% url 'tasks:project-list' %}">
-            Projects
-          </a>
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="{% url 'tasks:project-list' %}">Projects</a>
         </li>
-
-        <li class="nav-item px-3">
-          <a class="nav-link" href="{% url 'tasks:task-list' %}">
-            Tasks
-          </a>
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="{% url 'tasks:task-list' %}">Tasks</a>
         </li>
       </ul>
 
-      <ul class="navbar-nav ms-auto">
+       <ul class="navbar-nav d-flex align-items-center ms-auto">
         {% if user.is_authenticated %}
-          <button class="btn bg-gradient-primary mb-0">Logout</button>
-          {% else %}
-          <button class="btn bg-gradient-primary mb-0">Login</button>
+          <li class="nav-item px-3">
+            <a class="btn bg-gradient-primary mb-0 d-flex align-items-center" href="{% url 'logout' %}">
+              👤 {{ user.username }} | Logout
+            </a>
+          </li>
+        {% else %}
+          <li class="nav-item px-3">
+            <a class="btn bg-gradient-primary mb-0" href="{% url 'login' %}">Login</a>
+          </li>
         {% endif %}
       </ul>
     </div>
