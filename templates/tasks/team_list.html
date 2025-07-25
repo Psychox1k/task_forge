@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends 'layouts/base-presentation.html' %}
 
-</body>
-</html>
+{% block title %}Workers{% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+  <div class="card my-4 mx-auto" style="max-width: 960px;">
+  <div class="card-header pb-0">
+    <h6 class="text-uppercase text-center">Team List</h6>
+  </div>
+  <div class="card-body px-0 pt-0 pb-2">
+    <div class="table-responsive p-0">
+      <table class="table align-items-center mb-0 mx-auto w-75">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Leader</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Members Count</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for team in team_list %}
+          <tr>
+            <td>
+              <p class="text-xs font-weight-bold mb-0">{{ team.name }}</p>
+            </td>
+            <td>
+              <p class="text-xs text-secondary mb-0">{{ team.lead.username }}</p>
+            </td>
+
+            <td>
+              <span class="text-secondary text-xs font-weight-bold">{{ team.members.count }}</span>
+            </td>
+           <td>
+              <span class="text-secondary text-xs font-weight-bold">{{ team.description }}</span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-center text-muted">No teams found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}
