@@ -9,7 +9,7 @@
 
 {% block content %}
 
-  {% include "includes/navigation-auth.html" %}
+
   
   <section>
     <div class="page-header section-height-100">
@@ -34,11 +34,11 @@
                   {% csrf_token %}
 
                   <div class="mb-3">
-                    {{ form.username }}
-                  </div>
+                    <input type="text" name="username" class="form-control form-control-lg" placeholder="Username" required>                  </div>
                   <div class="mb-3">
-                    {{ form.password }}
+                    <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" required>
                   </div>
+                  
                   <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="rememberMe">
                     <label class="form-check-label" for="rememberMe">Remember me</label>
@@ -49,26 +49,26 @@
                   </div>
                 </form>
               </div>
-              <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                <p class="mb-4 text-sm mx-auto">
-                  Don't have an account?
-                  <a href="{% url 'register' %}" class="text-primary text-gradient font-weight-bold">Sign UP</a>
-                </p>
-              </div>
+{#              <div class="card-footer text-center pt-0 px-lg-2 px-1">#}
+{#                <p class="mb-4 text-sm mx-auto">#}
+{#                  Don't have an account?#}
+{#                  <a href="{% url 'register' %}" class="text-primary text-gradient font-weight-bold">Sign UP</a>#}
+{#                </p>#}
+{#              </div>#}
             </div>
           </div>
           <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-            <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center">
+            <div class="position-relative bg-gradi-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center">
               <img src="{{ ASSETS_ROOT }}/img/shapes/pattern-lines.svg" alt="pattern-lines" class="position-absolute opacity-4 start-0">
               <div class="position-relative">
                 <img class="max-width-500 w-100 position-relative z-index-2" src="{{ ASSETS_ROOT }}/img/illustrations/chat.png">
               </div>
               <h4 class="mt-5 text-white font-weight-bolder">
-                Soft UI Design System
+                Task Forge
               </h4>
               <p class="text-white">
-                &copy; <a target="_blank" class="text-white" href="https://bit.ly/3fKQZaL" target="_blank">Creative Tim</a> 
-                - Coded by <a class="text-white" target="_blank" href="https://appseed.us" target="_blank">AppSeed</a>.
+                              Created by <a class="text-white" target="_blank" href="https://bit.ly/3fKQZaL" target="_blank"> Kyrylo Zhyhariev</a>
+
               </p>
             </div>
           </div>
