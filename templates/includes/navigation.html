@@ -26,10 +26,12 @@
 
        <ul class="navbar-nav d-flex align-items-center ms-auto">
         {% if user.is_authenticated %}
-          <li class="nav-item px-3">
-            <a class="btn bg-gradient-primary mb-0 d-flex align-items-center" href="{% url 'logout' %}">
+          <li class="nav-item px-3"><form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn bg-gradient-primary mb-0 d-flex align-items-center">
               👤 {{ user.username }} | Logout
-            </a>
+            </button>
+          </form>
           </li>
         {% else %}
           <li class="nav-item px-3">
