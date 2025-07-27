@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'tasks.Worker'
 
-
+LOGIN_REDIRECT_URL = "/"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
@@ -129,9 +129,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-ASSETS_ROOT = "/static/assets"
+ASSETS_ROOT = '/static/assets'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATICFILES_DIRS = [ BASE_DIR / "static" ]
