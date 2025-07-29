@@ -31,3 +31,15 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
+
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Worker
+
+class TeamDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Team
+
+class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Project
+
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Task
