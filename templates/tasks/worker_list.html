@@ -26,7 +26,11 @@
             {% for worker in worker_list %}
             <tr>
               <td>
-                <h6 class="mb-0 text-sm">{{ worker.username }}</h6>
+                <h6 class="mb-0 text-sm">
+                  <a href="{% url 'tasks:worker-detail' pk=worker.id %}" class="text-decoration-none text-dark">
+                    {{ worker.username }}
+                  </a>
+                </h6>
               </td>
               <td>
                 <p class="text-sm text-secondary mb-0">{{ worker.first_name }} {{ worker.last_name }}</p>

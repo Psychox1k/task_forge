@@ -1,0 +1,84 @@
+{% extends 'layouts/base-presentation.html' %}
+
+{% block title %}{{ worker.username }}'s Profile{% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+  <div class="container my-5">
+    <h2 class="mb-4">Worker: {{ worker.username }}</h2>
+  
+    <div class="mb-3">
+      <strong>Full Name:</strong> {{ worker.first_name }} {{ worker.last_name }}
+    </div>
+
+    <div class="mb-3">
+      <strong>Email:</strong> {{ worker.email }}
+    </div>
+    <div class="mb-3">
+      <strong>Position:</strong> {{ worker.position }}
+    </div>
+
+    
+
+    <div class="mb-3">
+      <strong>Teams:</strong>
+      <ul>
+        {% for team in worker.teams.all %}
+          <li>{{ team.name }}</li>
+        {% empty %}
+          <li>No teams assigned.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <h4 class="mt-4 mb-3">Tasks Assigned to {{ worker.username }}:</h4>
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Deadline</th>
+            <th>Task type</th>
+            <th>Priority</th>
+            
+            <th>Tag</th>
+            <th>Project</th>
+            <th>Completion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in worker.assigned_tasks.all %}
+          <tr>
+            <td>{{ task.name }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.deadline }}</td>
+            <td>{{ task.project.name }}</td>
+            <td>{{ task.task_type }}</td>
+            <td>{{ task.priority }}</td>
+            <td>
+              {% for tag in task.tags.all %}
+                <span class="badge bg-info text-dark me-1">{{ tag.name }}</span>
+              {% empty %}
+                <span class="text-muted">No tags</span>
+              {% endfor %}
+            </td>
+          <td>
+                    {% if task.ic_completed %}
+                      <span class="badge bg-success">Completed</span>
+                    {% else %}
+                      <span class="badge bg-secondary">Pending</span>
+                    {% endif %}
+                  </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4">No tasks assigned to this worker.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="{% url 'tasks:worker-list' %}" class="btn btn-secondary mt-3">Back to Workers List</a>
+  </div>
+{% endblock content %}
