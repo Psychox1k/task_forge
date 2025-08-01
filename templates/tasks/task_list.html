@@ -3,38 +3,7 @@
 {% block title %}Tasks{% endblock title %}
 
 {% block stylesheets %}
-<style>
-  .btn-outline-primary {
-    border-radius: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease-in-out;
-  }
 
-  .btn-outline-primary:hover {
-    background-color: #5e72e4;
-    color: #fff;
-    border-color: #5e72e4;
-  }
-  .badge {
-    font-size: 0.85rem;
-    padding: 0.5em 0.75em;
-    border-radius: 0.5rem;
-    font-weight: 500;
-  }
-  .table th {
-    background-color: #f8f9fa;
-    color: #495057;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    font-weight: 600;
-  }
-  .table td {
-    vertical-align: middle;
-  }
-</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -98,86 +67,118 @@
     </div>
   </div>
   
-  <div class="text-center my-4">
-    <button class="btn btn-outline-primary px-4 py-2" data-bs-toggle="collapse" data-bs-target="#teamTasks" aria-expanded="false" aria-controls="teamTasks">
-      <strong>Team Tasks</strong>
-    </button>
-  </div>
-  <div class="collapse mt-3" id="teamTasks">
-    <div class="card card-body">
-      <h5 class="mb-3 text-center mb-3">Tasks Assigned to Your Team</h5>
-      <div class="table-responsive">
-        <div class="text-center">
-          <table class="table table-bordered table-hover text-center w-75 mx-auto shadow-sm rounded">
-            <thead class="table-light">
-              <tr>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Assigned To</th>
-                <th>Deadline</th>
-                <th>Project</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for task in team_tasks %}
-              <tr>
-                <td>{{ task.title }}</td>
-                <td>{{ task.status }}</td>
-                <td>{{ task.assignee.username }}</td>
-                <td>{{ task.deadline }}</td>
-                <td>{{ task.project.name }}</td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="5">No team tasks available.</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="text-center my-4">
-    <button class="btn btn-outline-primary px-4 py-2" data-bs-toggle="collapse" data-bs-target="#projectTasks" aria-expanded="false" aria-controls="projectTasks">
-      <strong>Project Tasks</strong>
-    </button>
-  </div>
-  <div class="collapse mt-3" id="projectTasks">
-    <div class="card card-body">
-      <h5 class="mb-3 text-center mb-3">Tasks Grouped by Projects</h5>
-      <div class="table-responsive">
-        <div class="text-center">
-          <table class="table table-bordered table-hover text-center w-75 mx-auto shadow-sm rounded">
-            <thead class="table-light">
-              <tr>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Assigned To</th>
-                <th>Deadline</th>
-                <th>Project</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for task in project_tasks %}
-              <tr>
-                <td>{{ task.title }}</td>
-                <td>{{ task.status }}</td>
-                <td>{{ task.assignee.username }}</td>
-                <td>{{ task.deadline }}</td>
-                <td>{{ task.project.name }}</td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="5">No project tasks available.</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
+{#  <div class="text-center my-4">#}
+{#    <button class="btn btn-outline-primary px-4 py-2" data-bs-toggle="collapse" data-bs-target="#teamTasks" aria-expanded="false" aria-controls="teamTasks">#}
+{#      <strong>Team Tasks</strong>#}
+{#    </button>#}
+{#  </div>#}
+{#  <div class="collapse mt-3" id="teamTasks">#}
+{#    <div class="card card-body">#}
+{#      <h5 class="mb-3 text-center mb-3">Tasks Assigned to Your Team</h5>#}
+{#      <div class="table-responsive">#}
+{#        <div class="text-center">#}
+{#          <table class="table table-bordered table-hover text-center w-75 mx-auto shadow-sm rounded">#}
+{#            <thead class="table-light">#}
+{#              <tr>#}
+{#                  <th>Title</th>#}
+{#                  <th>Description</th>#}
+{#                  <th>Task type</th>#}
+{#                  <th>Priority</th>#}
+{#                  <th>Deadline</th>#}
+{#                  <th>Tag</th>#}
+{#                  <th>Project</th>#}
+{#                  <th>Completion</th>#}
+{#                </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#              {% for task in team_tasks %}#}
+{#              <tr class="text-center">#}
+{#                  <td>{{ task.name }}</td>#}
+{#                  <td>{{ task.description }}</td>#}
+{#                  <td>{{ task.task_type }}</td>#}
+{#                  <td>{{ task.priority }}</td>#}
+{#                  <td>{{ task.deadline }}</td>#}
+{#                  <td>#}
+{#                    {% for tag in task.tags.all %}#}
+{#                      <span class="badge bg-info text-dark me-1">{{ tag.name }}</span>#}
+{#                    {% empty %}#}
+{#                      <span class="text-muted">No tags</span>#}
+{#                    {% endfor %}#}
+{#                  </td>#}
+{#                  <td>{{ task.project.name }}</td>#}
+{#                  <td>#}
+{#                    {% if task.ic_completed %}#}
+{#                      <span class="badge bg-success">Completed</span>#}
+{#                    {% else %}#}
+{#                      <span class="badge bg-secondary">Pending</span>#}
+{#                    {% endif %}#}
+{#                  </td>#}
+{#                </tr>#}
+{#              {% endfor %}#}
+{#            </tbody>#}
+{#          </table>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{#  </div>#}
+{##}
+{#  <div class="text-center my-4">#}
+{#    <button class="btn btn-outline-primary px-4 py-2" data-bs-toggle="collapse" data-bs-target="#projectTasks" aria-expanded="false" aria-controls="projectTasks">#}
+{#      <strong>Project Tasks</strong>#}
+{#    </button>#}
+{#  </div>#}
+{#  <div class="collapse mt-3" id="projectTasks">#}
+{#    <div class="card card-body">#}
+{#      <h5 class="mb-3 text-center mb-3">Tasks Grouped by Projects</h5>#}
+{#      <div class="table-responsive">#}
+{#        <div class="text-center">#}
+{#          <table class="table table-bordered table-hover text-center w-75 mx-auto shadow-sm rounded">#}
+{#            <thead class="table-light">#}
+{#              <tr>#}
+{#                  <th>Title</th>#}
+{#                  <th>Description</th>#}
+{#                  <th>Task type</th>#}
+{#                  <th>Priority</th>#}
+{#                  <th>Deadline</th>#}
+{#                  <th>Tag</th>#}
+{#                  <th>Project</th>#}
+{#                  <th>Completion</th>#}
+{#                </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#              {% for task in project_tasks %}#}
+{#              <tr class="text-center">#}
+{#                  <td>{{ task.name }}</td>#}
+{#                  <td>{{ task.description }}</td>#}
+{#                  <td>{{ task.task_type }}</td>#}
+{#                  <td>{{ task.priority }}</td>#}
+{#                  <td>{{ task.deadline }}</td>#}
+{#                  <td>#}
+{#                    {% for tag in task.tags.all %}#}
+{#                      <span class="badge bg-info text-dark me-1">{{ tag.name }}</span>#}
+{#                    {% empty %}#}
+{#                      <span class="text-muted">No tags</span>#}
+{#                    {% endfor %}#}
+{#                  </td>#}
+{#                  <td>{{ task.project.name }}</td>#}
+{#                  <td>#}
+{#                    {% if task.ic_completed %}#}
+{#                      <span class="badge bg-success">Completed</span>#}
+{#                    {% else %}#}
+{#                      <span class="badge bg-secondary">Pending</span>#}
+{#                    {% endif %}#}
+{#                  </td>#}
+{#                </tr>#}
+{#              {% empty %}#}
+{#              <tr>#}
+{#                <td colspan="5">No project tasks available.</td>#}
+{#              </tr>#}
+{#              {% endfor %}#}
+{#            </tbody>#}
+{#          </table>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{#  </div>#}
   
 {% endblock content %}
