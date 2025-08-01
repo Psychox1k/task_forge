@@ -23,7 +23,8 @@
               {% for project in project_list %}
               <tr>
                 <td class="text-center">
-                  <h6 class="mb-0 text-xs">{{ project.name }}</h6>
+                  <h6 class="mb-0 text-xs">
+                    <a href="{% url 'tasks:project-detail' pk=project.id %}" class="text-primary">{{ project.name }}</a></h6>
                 </td>
                 <td class="text-center">
                   <p class="text-xs font-weight-bold mb-0">

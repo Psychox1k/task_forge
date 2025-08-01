@@ -1,10 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends 'layouts/base-presentation.html' %}
 
-</body>
-</html>
+{% block title %}Project: {{ project.name }}{% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+  <div class="container my-5">
+    <h2 class="mb-4">{{ project.name }}</h2>
+
+    <div class="mb-3">
+      <strong>Description:</strong> {{ project.description }}
+    </div>
+    <div class="mb-3">
+      <strong>Completion:</strong> {{ project.completion_percentage }}%
+    </div>
+    <div class="mb-3">
+      <strong>Start Date:</strong> {{ project.created_at }}
+    </div>
+    <div class="mb-3">
+      <strong>End Date:</strong> {{ project.deadline }}
+    </div>
+
+    <h4 class="mt-4 mb-3">Tasks for {{ project.name }}:</h4>
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Task type</th>
+          <th>Priority</th>
+          <th>Deadline</th>
+          <th>Tag</th>
+          <th>Completion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in project.tasks.all %}
+          <tr>
+                  <td>{{ task.name }}</td>
+                  <td>{{ task.description }}</td>
+                  <td>{{ task.task_type }}</td>
+                  <td>{{ task.priority }}</td>
+                  <td>{{ task.deadline }}</td>
+                  <td>
+                    {% for tag in task.tags.all %}
+                      <span class="badge bg-info text-dark me-1">{{ tag.name }}</span>
+                    {% empty %}
+                      <span class="text-muted">No tags</span>
+                    {% endfor %}
+                  </td>
+                  <td>
+                    {% if task.ic_completed %}
+                      <span class="badge bg-success">Completed</span>
+                    {% else %}
+                      <span class="badge bg-secondary">Pending</span>
+                    {% endif %}
+                  </td>
+                </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">No tasks available for this project.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="{% url 'tasks:project-list' %}" class="btn btn-secondary mt-3">Back to Projects List</a>
+  </div>
+{% endblock content %}
