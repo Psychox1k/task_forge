@@ -3,6 +3,7 @@ from .models import Team, Project, Task, Worker
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+
 # Create your views here.
 def index(request):
     num_projects = Project.objects.count()
@@ -20,26 +21,35 @@ def index(request):
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
+    paginate_by = 2
 
 
 class TeamListView(LoginRequiredMixin, generic.ListView):
     model = Team
+    paginate_by = 5
 
 
 class ProjectListView(LoginRequiredMixin, generic.ListView):
     model = Project
+    paginate_by = 5
+
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
+    paginate_by = 10
+
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
 
+
 class TeamDetailView(LoginRequiredMixin, generic.DetailView):
     model = Team
 
+
 class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     model = Project
+
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
