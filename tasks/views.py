@@ -33,11 +33,21 @@ class TeamListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 5
 
 
-
-
 class ProjectListView(LoginRequiredMixin, generic.ListView):
     model = Project
     paginate_by = 5
+
+    def get_queryset(self):
+        queryset = Project.objects.all()
+        name = self.request.GET.get("name", "")
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = self.request.GET.get("name", "")
+        return context
 
 
 
