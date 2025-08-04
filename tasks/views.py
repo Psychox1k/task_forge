@@ -27,10 +27,21 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
 
 
-
 class TeamListView(LoginRequiredMixin, generic.ListView):
     model = Team
     paginate_by = 5
+
+    def get_queryset(self):
+        queryset = Team.objects.all()
+        name = self.request.GET.get("name", "")
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = self.request.GET.get("name", "")
+        return context
 
 
 class ProjectListView(LoginRequiredMixin, generic.ListView):
@@ -50,7 +61,6 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
         return context
 
 
-
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     paginate_by = 10
@@ -66,7 +76,6 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         context["name"] = self.request.GET.get("name", "")
         return context
-
 
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
