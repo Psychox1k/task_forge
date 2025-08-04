@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+
 from .models import Team, Project, Task, Worker
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,9 +26,13 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 2
 
 
+
+
 class TeamListView(LoginRequiredMixin, generic.ListView):
     model = Team
     paginate_by = 5
+
+
 
 
 class ProjectListView(LoginRequiredMixin, generic.ListView):
@@ -34,9 +40,23 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 5
 
 
+
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     paginate_by = 10
+
+    def get_queryset(self):
+        queryset = Task.objects.all()
+        name = self.request.GET.get("name", "")
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = self.request.GET.get("name", "")
+        return context
+
 
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
