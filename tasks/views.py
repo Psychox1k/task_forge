@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 
-
+from .forms import TeamForm
 from .models import Team, Project, Task, Worker
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -103,3 +104,9 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
+
+
+class TeamCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Team
+    form_class = TeamForm
+    success_url = reverse_lazy("task:team-list")

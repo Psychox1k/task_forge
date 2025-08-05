@@ -1,0 +1,43 @@
+{% extends 'layouts/base-presentation.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header text-white">
+          <h4 class="mb-0">Create Team</h4>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label">Team Name</label>
+              {{ form.name|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              {{ form.description|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Members</label>
+              {{ form.members }}
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Team Lead</label>
+              {{ form.lead|add_class:"form-control" }}
+            </div>
+
+            <button type="submit" class="btn btn-success mt-2">Create</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

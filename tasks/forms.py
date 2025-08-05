@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from .models import Team, Worker
+
 
 class CustomLoginForm(AuthenticationForm):
     username = forms.CharField(
@@ -14,3 +16,32 @@ class CustomLoginForm(AuthenticationForm):
             'class': 'form-control form-control-lg'
         })
     )
+
+
+class TeamForm(forms.ModelForm):
+    members = forms.ModelMultipleChoiceField(
+        queryset=Worker.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+    lead = forms.ModelChoiceField(
+        queryset=Worker.objects.all(),
+        widget=forms.Select,
+        required=True
+    )
+
+    class Meta:
+        model = Team
+        fields = ['name', 'description', 'members', 'lead']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if 'members' in self.data:
+            try:
+                member_ids = self.data.getlist('members')
+                self.fields['lead'].queryset = Worker.objects.filter(id__in=member_ids)
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['lead'].queryset = self.instance.members.all()
