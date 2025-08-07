@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends 'layouts/base-presentation.html' %}
 
-</body>
-</html>
+{% block title %}Workers{% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+  
+    <div class="container mt-6">
+        <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
+      
+         <form method="get" class="d-flex mx-auto w-100" style="gap: 10px; max-width: 600px;">
+        <div class="input-group" style="height: 42px;">
+          <span class="input-group-text d-flex align-items-center"><i class="ni ni-zoom-split-in"></i></span>
+          <input type="text" name="name" class="form-control" placeholder="Search by name" value="{{ request.GET.name }}">
+        </div>
+        <button type="submit" class="btn btn-primary d-flex align-items-center" style="height: 42px;">Search</button>
+      </form>
+      
+          <a href="{% url 'task:team-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height: 42px;">
+            <i class="ni ni-fat-add me-1"></i> Create
+          </a>
+      
+        </div>
+    </div>
+  
+  
+  
+  
+  <div class="card my-4 mx-auto" style="max-width: 960px;">
+  <div class="card-header pb-0">
+    <h6 class="text-uppercase text-center">Task Types List</h6>
+  </div>
+  <div class="card-body px-0 pt-0 pb-2">
+    <div class="table-responsive p-0">
+      <table class="table align-items-center mb-0 mx-auto w-75">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for type in tasktype_list %}
+            <tr>
+          <td>{{ type.name }}</td>
+            </tr>
+          {% empty %}
+            There is no task types
+         {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
-from .forms import TeamForm, ProjectForm
-from .models import Team, Project, Task, Worker
+from .forms import TeamForm, ProjectForm, WorkerCreationForm, TaskForm
+from .models import Team, Project, Task, Worker, Tag, TaskType
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -90,6 +90,24 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         return context
 
 
+class TagListView(LoginRequiredMixin, generic.ListView):
+    model = Tag
+    paginate_by = 10
+
+
+class TaskTypeListView(LoginRequiredMixin, generic.ListView):
+    model = TaskType
+    paginate_by = 10
+
+
+class UserTaskListView(LoginRequiredMixin, generic.ListView):
+    model = Task
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Task.objects.filter(assignees=self.request.user)
+
+
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
 
@@ -115,4 +133,16 @@ class TeamCreateView(LoginRequiredMixin, generic.CreateView):
 class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
     model = Project
     form_class = ProjectForm
-    success_url = reverse_lazy("tasks:project-list")
+    success_url = reverse_lazy("task:project-list")
+
+
+class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Worker
+    form_class = WorkerCreationForm
+    success_url = reverse_lazy("task:worker-list")
+
+
+class TaskCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Task
+    form_class = TaskForm
+    success_url = reverse_lazy("task:task-list")
