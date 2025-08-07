@@ -1,6 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
-from .models import Team, Worker, Project
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django_select2.forms import ModelSelect2MultipleWidget
+
+from .models import Team, Worker, Project, Task, Tag
 
 
 class CustomLoginForm(AuthenticationForm):
@@ -62,5 +64,45 @@ class ProjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Устанавливаем виджет для deadline
         self.fields['deadline'].widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+
+
+class WorkerCreationForm(UserCreationForm):
+    class Meta:
+        model = Worker
+        fields = UserCreationForm.Meta.fields + (
+            "position",
+            "first_name",
+            "last_name",
+        )
+
+
+class TaskForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        required=False,
+        widget=forms.SelectMultiple(
+            attrs={
+                "class": "select2",
+                "style": "width: 100%",
+                "data-placeholder": "Choose Assingnees"
+            }
+        )
+    )
+    assignees = forms.ModelMultipleChoiceField(
+        queryset=Worker.objects.all(),
+        widget=forms.SelectMultiple(
+            attrs={
+                "class": "select2",
+                "style": "width: 100%",
+                "data-placeholder": "Choose tag"
+            }
+        )
+    )
+
+    class Meta:
+        model = Task
+        exclude = ["is_completed"]
+        widgets = {
+            "deadline": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+        }

@@ -20,9 +20,10 @@ Coded by www.creative-tim.com
   <link rel="apple-touch-icon" sizes="76x76" href="{{ ASSETS_ROOT }}/img/apple-icon.png">
   <link rel="icon" type="image/png" href="{{ ASSETS_ROOT }}/img/favicon.png">
   <link rel="canonical" href="https://appseed.us/ui-kit/soft-ui-design-system"/>
-  
+
+
   <title>
-    Django Soft UI Design System - {% block title %}{% endblock %} | AppSeed
+    Task Forge{% block title %}{% endblock %} Kirill
   </title>
 
   <!--     Fonts and icons     -->
@@ -37,7 +38,17 @@ Coded by www.creative-tim.com
   <link id="pagestyle" href="{{ ASSETS_ROOT }}/css/soft-design-system.css?v=1.0.1" rel="stylesheet" />
 
   <!-- Specific CSS goes HERE -->
-  {% block stylesheets %}{% endblock stylesheets %}
+  {% block stylesheets %}
+    
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">#}
+  {% endblock stylesheets %}
+
+
+  {% block extrahead %}
+  {{ form.media }}
+{% endblock %}
+
 
 </head>
 
@@ -53,10 +64,18 @@ Coded by www.creative-tim.com
 
     {% include "includes/scripts.html" %}
 
-
+<!-- Bootstrap and Soft UI JS -->
+{#    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>#}
+{#    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.min.js"></script>#}
+{##}
+{#  #}
 
   <!-- Specific JS goes HERE --> 
-  {% block javascripts %}{% endblock javascripts %}
+  {% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  {% endblock javascripts %}
 
 </body>
 </html>
