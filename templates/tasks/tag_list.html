@@ -2,7 +2,10 @@
 
 {% block title %}Workers{% endblock title %}
 
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+  {% load static %}
+<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+{% endblock stylesheets %}
 
 {% block content %}
   
@@ -37,13 +40,23 @@
         <thead>
           <tr>
             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edit</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Delete</th>
+
           </tr>
         </thead>
         <tbody>
           {% for tag in tag_list %}
             <tr>
           <td>{{ tag.name }}</td>
+            <td>
+              <a href="{% url 'task:tag-update' pk=tag.id%}" class="link-edit">Edit</a>
+            </td>
+            <td>
+              <a href="{% url 'task:tag-delete' pk=tag.id%}" class="link-delete">Delete</a>
+            </td>
             </tr>
+
           {% empty %}
             There is no task types
          {% endfor %}

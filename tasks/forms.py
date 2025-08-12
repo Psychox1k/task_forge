@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django_select2.forms import ModelSelect2MultipleWidget
 
-from .models import Team, Worker, Project, Task, Tag
+from .models import Team, Worker, Project, Task, Tag, TaskType
 
 
 class CustomLoginForm(AuthenticationForm):
@@ -106,3 +106,15 @@ class TaskForm(forms.ModelForm):
         widgets = {
             "deadline": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
         }
+
+
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = "__all__"
+
+
+class TaskTypeForm(forms.ModelForm):
+    class Meta:
+        model = TaskType
+        fields = "__all__"

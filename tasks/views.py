@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
-from .forms import TeamForm, ProjectForm, WorkerCreationForm, TaskForm
+from .forms import TeamForm, ProjectForm, WorkerCreationForm, TaskForm, TaskTypeForm, TagForm
 from .models import Team, Project, Task, Worker, Tag, TaskType
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -146,3 +146,37 @@ class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
     form_class = TaskForm
     success_url = reverse_lazy("task:task-list")
+
+
+class TagCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Tag
+    form_class = TagForm
+    success_url = reverse_lazy("task:tag-list")
+
+
+class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Tag
+    form_class = TaskTypeForm
+    success_url = reverse_lazy("task:tasktype-list")
+
+
+class TagUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Tag
+    form_class = TagForm
+    success_url = reverse_lazy("task:tag-list")
+
+
+class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Tag
+    form_class = TaskTypeForm
+    success_url = reverse_lazy("task:tasktype-list")
+
+
+class TagDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Tag
+    success_url = reverse_lazy("task:tag-list")
+
+
+class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = TaskType
+    success_url = reverse_lazy("task:tasktype-list")

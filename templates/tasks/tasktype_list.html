@@ -1,8 +1,11 @@
 {% extends 'layouts/base-presentation.html' %}
 
-{% block title %}Workers{% endblock title %}
+{% block title %}Task Types{% endblock title %}
 
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+  {% load static %}
+<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+{% endblock stylesheets %}
 
 {% block content %}
   
@@ -37,13 +40,24 @@
         <thead>
           <tr>
             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edit</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Delete</th>
           </tr>
         </thead>
         <tbody>
           {% for type in tasktype_list %}
             <tr>
           <td>{{ type.name }}</td>
+            
+            <td>
+              <a href="{% url 'task:tasktype-update' pk=type.id%}" class="link-edit">Edit</a>
+            </td>
+            <td>
+              <a href="{% url 'task:tasktype-delete' pk=type.id%}" class="link-delete">Delete</a>
+            </td>
+            
             </tr>
+            
           {% empty %}
             There is no task types
          {% endfor %}
