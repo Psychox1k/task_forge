@@ -7,7 +7,7 @@
     <div class="col-md-8">
       <div class="card shadow">
         <div class="card-header text-white">
-          <h4 class="mb-0">Create Worker</h4>
+          <h4 class="mb-0">{{ object|yesno:"Update,Create" }}  Worker</h4>
         </div>
         <div class="card-body">
           <form action="" method="post" novalidate>

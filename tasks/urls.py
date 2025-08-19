@@ -12,7 +12,7 @@ from .views import (
     TeamDetailView,
     TaskDetailView, TeamCreateView, ProjectCreateView, WorkerCreateView, TaskCreateView, UserTaskListView, TagListView,
     TaskTypeListView, TagCreateView, TaskTypeCreateView, TagUpdateView, TaskTypeUpdateView, TagDeleteView,
-    TaskTypeDeleteView, TeamUpdateView, TeamDeleteView,
+    TaskTypeDeleteView, TeamUpdateView, TeamDeleteView, WorkerDeleteView, WorkerUpdateView,
 )
 
 urlpatterns = [
@@ -40,11 +40,14 @@ urlpatterns = [
     path("tags/<int:pk>/update/", TagUpdateView.as_view(), name="tag-update"),
     path("teams/<int:pk>/update/", TeamUpdateView.as_view(), name="team-update"),
     path("tasktypes/<int:pk>/update/", TaskTypeUpdateView.as_view(), name="tasktype-update"),
+    path("workers/<int:pk>/update/", WorkerUpdateView.as_view(), name="worker-update"),
 
     path("tags/<int:pk>/delete/", TagDeleteView.as_view(), name="tag-delete"),
     path("tasktypes/<int:pk>/delete/", TaskTypeDeleteView.as_view(), name="tasktype-delete"),
     path("teams/<int:pk>/delete/", TeamDeleteView.as_view(), name="team-delete"),
+    path("workers/<int:pk>delete/", WorkerDeleteView.as_view(), name="worker-delete"),
 
 ]
 
 app_name = "task"
+

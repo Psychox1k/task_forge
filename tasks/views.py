@@ -177,7 +177,10 @@ class TeamUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = TeamForm
     success_url = reverse_lazy("task:team-list")
 
-
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Worker
+    form_class = WorkerCreationForm
+    success_url = reverse_lazy("task:worker-list")
 
 class TagDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Tag
@@ -192,3 +195,7 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 class TeamDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Team
     success_url = reverse_lazy("task:team-list")
+
+class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Worker
+    success_url = reverse_lazy("task:worker-list")
