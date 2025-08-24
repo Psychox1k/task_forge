@@ -37,17 +37,18 @@ Coded by www.creative-tim.com
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ ASSETS_ROOT }}/css/soft-design-system.css?v=1.0.1" rel="stylesheet" />
 
+
+
+   {% block select2_css %}{% endblock select2_css %}
   <!-- Specific CSS goes HERE -->
   {% block stylesheets %}
     
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">#}
+    <link href="{{ ASSETS_ROOT }}/css/select2-custom.css" rel="stylesheet" />
   {% endblock stylesheets %}
 
 
-  {% block extrahead %}
-  {{ form.media }}
-{% endblock %}
+
 
 
 </head>
@@ -69,13 +70,14 @@ Coded by www.creative-tim.com
 {#    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.min.js"></script>#}
 {##}
 {#  #}
-
-  <!-- Specific JS goes HERE --> 
-  {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-  {% endblock javascripts %}
+    
+    <!-- 2. ПОТОМ кастомные скрипты -->
+    {% block select2_js %}{% endblock select2_js %}
+    
+    <!-- 3. ПОТОМ page-specific скрипты -->
+    {% block javascripts %}{% endblock javascripts %}
 
 </body>
 </html>

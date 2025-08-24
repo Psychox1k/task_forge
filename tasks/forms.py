@@ -23,7 +23,14 @@ class CustomLoginForm(AuthenticationForm):
 class TeamForm(forms.ModelForm):
     members = forms.ModelMultipleChoiceField(
         queryset=Worker.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
+        required=True,
+        widget=forms.SelectMultiple(
+            attrs={
+                "class": "select2",
+                "style": "width: 100%",
+                "data-placeholder": "Choose Members"
+            }
+        )
     )
 
     lead = forms.ModelChoiceField(
@@ -51,9 +58,15 @@ class TeamForm(forms.ModelForm):
 
 class ProjectForm(forms.ModelForm):
     teams = forms.ModelMultipleChoiceField(
-        queryset=Team.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False
+        queryset=Worker.objects.all(),
+        required=True,
+        widget=forms.SelectMultiple(
+            attrs={
+                "class": "select2",
+                "style": "width: 100%",
+                "data-placeholder": "Choose Teams"
+            }
+        )
     )
 
     class Meta:
@@ -81,23 +94,18 @@ class TaskForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
         required=False,
-        widget=forms.SelectMultiple(
-            attrs={
-                "class": "select2",
-                "style": "width: 100%",
-                "data-placeholder": "Choose Assingnees"
-            }
-        )
+        widget=forms.SelectMultiple(attrs={
+            "class": "select2",
+            "data-placeholder": "Choose tags",
+        })
     )
+
     assignees = forms.ModelMultipleChoiceField(
         queryset=Worker.objects.all(),
-        widget=forms.SelectMultiple(
-            attrs={
-                "class": "select2",
-                "style": "width: 100%",
-                "data-placeholder": "Choose tag"
-            }
-        )
+        widget=forms.SelectMultiple(attrs={
+            "class": "select2",
+            "data-placeholder": "Choose assignees",
+        })
     )
 
     class Meta:

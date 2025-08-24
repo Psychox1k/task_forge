@@ -1,6 +1,6 @@
 {% extends 'layouts/base-presentation.html' %}
 {% load crispy_forms_filters %}
-
+{% load static %}
 {% block content %}
 <div class="container my-5">
   <div class="row justify-content-center">
@@ -21,4 +21,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <script src="{% static 'assets/js/additional/select2.js' %}"></script>
 {% endblock %}

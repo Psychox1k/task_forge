@@ -1,13 +1,11 @@
 {% extends 'layouts/base-presentation.html' %}
 
 {% load crispy_forms_filters %}
+{% load static %}
 
-{% block extrahead %}
-  {{ form.media }}
-  <!-- Select2 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
-{% endblock %}
+{% block select2_css %}
+  <link href="{% static 'assets/css/select2-theme.css' %}" rel="stylesheet" />
+{% endblock select2_css %}
 
 {% block content %}
 <div class="container my-5">
@@ -28,16 +26,9 @@
     </div>
   </div>
 </div>
-{% endblock %}
-{% block javascripts %}
-   {{ block.super }}
 
-  <script>
-    $(document).ready(function () {
-      $('.select2').select2({
-
-        width: '100%'
-      });
-    });
-  </script>
 {% endblock %}
+
+{% block select2_js %}
+  <script src="{% static 'assets/js/additional/select2.js' %}"></script>
+{% endblock select2_js %}

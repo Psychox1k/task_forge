@@ -1,5 +1,10 @@
 {% extends 'layouts/base-presentation.html' %}
 {% load crispy_forms_filters %}
+{% load static %}
+
+{% block select2_css %}
+  <link href="{% static 'assets/css/select2-theme.css' %}" rel="stylesheet" />
+{% endblock select2_css %}
 
 {% block content %}
 <div class="container my-5">
@@ -23,3 +28,8 @@
   </div>
 </div>
 {% endblock %}
+
+
+{% block select2_js %}
+  <script src="{% static 'assets/js/additional/select2.js' %}"></script>
+{% endblock select2_js %}
