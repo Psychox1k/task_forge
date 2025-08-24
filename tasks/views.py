@@ -64,6 +64,18 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
     paginate_by = 10
 
+    def get_queryset(self):
+        queryset = Position.objects.all()
+        name = self.request.GET.get("name", "")
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = self.request.GET.get("name", "")
+        return context
+
 
 class ProjectListView(LoginRequiredMixin, generic.ListView):
     model = Project
@@ -103,10 +115,34 @@ class TagListView(LoginRequiredMixin, generic.ListView):
     model = Tag
     paginate_by = 10
 
+    def get_queryset(self):
+        queryset = Tag.objects.all()
+        name = self.request.GET.get("name", "")
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = self.request.GET.get("name", "")
+        return context
+
 
 class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     model = TaskType
     paginate_by = 10
+
+    def get_queryset(self):
+        queryset = TaskType.objects.all()
+        name = self.request.GET.get("name", "")
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = self.request.GET.get("name", "")
+        return context
 
 
 class UserTaskListView(LoginRequiredMixin, generic.ListView):
