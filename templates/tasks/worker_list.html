@@ -1,97 +1,71 @@
 {% extends 'layouts/base-presentation.html' %}
-
-{% block title %}Workers{% endblock title %}
-
-{% block stylesheets %}{% endblock stylesheets %}
-
+{% block title %}Workers{% endblock %}
 {% block content %}
-  
-   <div class="container mt-6">
-        <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
-      
-         <form method="get" class="d-flex mx-auto w-100" style="gap: 10px; max-width: 600px;">
-        <div class="input-group" style="height: 42px;">
-          <span class="input-group-text d-flex align-items-center"><i class="ni ni-zoom-split-in"></i></span>
-          <input type="text" name="username" class="form-control" placeholder="Search by username" value="{{ request.GET.username }}">
-        </div>
-        <button type="submit" class="btn btn-primary d-flex align-items-center" style="height: 42px;">Search</button>
-      </form>
-      
-          <a href="{% url 'task:worker-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height: 42px;">
-            <i class="ni ni-fat-add me-1"></i> Create
-          </a>
-      
-        </div>
-    </div>
-  
-  
-  
-  
-  
-<div class="container my-5">
-  <div class="card shadow rounded-4 w-75 mx-auto">
+
+<!-- Поиск + Create -->
+<div class="container mt-6">
+  <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
+    <form method="get" class="d-flex mx-auto w-100" style="gap:10px;max-width:600px;">
+      <div class="input-group" style="height:42px;">
+        <span class="input-group-text d-flex align-items-center"><i class="ni ni-zoom-split-in"></i></span>
+        <input type="text" name="username" class="form-control" placeholder="Search by username" value="{{ request.GET.username }}">
+      </div>
+      <button class="btn btn-primary d-flex align-items-center" style="height:42px;">Search</button>
+    </form>
+
+    <a href="{% url 'task:worker-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height:42px;">
+      <i class="ni ni-fat-add me-1"></i> Create
+    </a>
+  </div>
+</div>
+
+<!-- Таблица -->
+<div class="container my-5 px-3" style="max-width:1200px;">
+  <div class="card shadow" style="border-radius:12px;">
     <div class="card-body p-4">
-      <h4 class="mb-4">Worker List</h4>
       <div class="table-responsive">
-        <table class="table align-items-center mb-0">
-          <thead>
+        <h4 class="mb-4">Workers</h4>
+        <table class="table mb-0" style="border-collapse:separate;border-spacing:0 .5rem;">
+          <thead class="bg-light">
             <tr>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Username</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Fullname</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Email</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Position</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Projects</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Teams</th>
-              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Date Joined</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Username</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Full name</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Email</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Position</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Teams</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3 text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {% for worker in worker_list %}
-            <tr>
-              <td>
-                <h6 class="mb-0 text-sm">
-                  <a href="{% url 'tasks:worker-detail' pk=worker.id %}" class="text-decoration-none text-dark">
-                    {{ worker.username }}
-                  </a>
-                </h6>
+          {% for w in worker_list %}
+            <tr class="align-middle" style="background:#fff;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,.05);">
+              <td class="px-3 py-3">
+                <a href="{% url 'task:worker-detail' pk=w.id %}" class="text-dark text-sm fw-bold text-decoration-none">{{ w.username }}</a>
               </td>
-              <td>
-                <p class="text-sm text-secondary mb-0">{{ worker.first_name }} {{ worker.last_name }}</p>
-              </td>
-              <td>
-                <p class="text-sm text-secondary mb-0">{{ worker.email }}</p>
-              </td>
-              <td>
-                <p class="text-sm mb-0">{{ worker.position }}</p>
-              </td>
-              <td class="text-center">
-                {% for project in worker.projects.all %}
-                  <span class="badge bg-secondary text-xs me-1">{{ project.name }}</span>
+              <td class="px-3 py-3 text-sm">{{ w.first_name }} {{ w.last_name }}</td>
+              <td class="px-3 py-3 text-sm text-secondary">{{ w.email|default:"—" }}</td>
+              <td class="px-3 py-3 text-sm">{{ w.position|default:"—" }}</td>
+              <td class="px-3 py-3">
+                {% for t in w.teams.all|slice:":3" %}
+                  <span class="badge bg-info text-xs me-1">{{ t.name }}</span>
                 {% empty %}
-                  <span class="text-muted text-sm">–</span>
+                  <span class="text-muted text-sm">—</span>
                 {% endfor %}
+                {% if w.teams.count > 3 %}
+                  <span class="badge bg-secondary text-xs">+{{ w.teams.count|add:"-3" }}</span>
+                {% endif %}
               </td>
-              <td class="text-center">
-                {% for team in worker.teams.all %}
-                  <span class="badge bg-info text-xs me-1">{{ team.name }}</span>
-                {% empty %}
-                  <span class="text-muted text-sm">–</span>
-                {% endfor %}
-              </td>
-              <td class="text-center">
-                <span class="text-sm text-secondary">{{ worker.date_joined|date:"Y-m-d" }}</span>
+              <td class="px-3 py-3 text-center">
+                <a href="{% url 'task:worker-detail' pk=w.id %}" class="text-info fw-bold text-decoration-none" style="font-size:.875rem;">View</a>
               </td>
             </tr>
-            {% empty %}
-            <tr>
-              <td colspan="7" class="text-center text-muted">No workers found.</td>
-            </tr>
-            {% endfor %}
+          {% empty %}
+            <tr><td colspan="6" class="text-center text-muted py-5">No workers found</td></tr>
+          {% endfor %}
           </tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
-{% endblock content %}
-
+{% endblock %}

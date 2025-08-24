@@ -1,83 +1,68 @@
 {% extends 'layouts/base-presentation.html' %}
-
-{% block title %}Workers{% endblock title %}
-
-{% block stylesheets %}{% endblock stylesheets %}
-
+{% block title %}Projects{% endblock %}
 {% block content %}
-   <div class="container mt-6">
-      <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
-    
-       <form method="get" class="d-flex mx-auto w-100" style="gap: 10px; max-width: 600px;">
-          <div class="input-group" style="height: 42px;">
-            <span class="input-group-text d-flex align-items-center"><i class="ni ni-zoom-split-in"></i></span>
-            <input type="text" name="name" class="form-control" placeholder="Search by name" value="{{ request.GET.name }}">
-          </div>
-          <button type="submit" class="btn btn-primary d-flex align-items-center" style="height: 42px;">Search</button>
-        </form>
-    
-        <a href="{% url 'task:project-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height: 42px;">
-          <i class="ni ni-fat-add me-1"></i> Create
-        </a>
-    
-      </div>
-    </div>
-  
-  
-  
-  
-  <div class="container my-5">
-    <div class="card shadow rounded-4 w-75 mx-auto">
-      <div class="card-body p-4">
-        <h4 class="mb-4">Project List</h4>
-        <div class="table-responsive">
-          <table class="table align-items-center mb-0">
-            <thead>
-              <tr>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Project</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Budget</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Completion</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Deadline</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for project in project_list %}
-              <tr>
-                <td class="text-center">
-                  <h6 class="mb-0 text-xs">
-                    <a href="{% url 'tasks:project-detail' pk=project.id %}" class="text-primary">{{ project.name }}</a></h6>
-                </td>
-                <td class="text-center">
-                  <p class="text-xs font-weight-bold mb-0">
-                    {% if project.budget %}
-                      ${{ project.budget }}
-                    {% else %}
-                      —
-                    {% endif %}
-                  </p>
-                </td>
-                <td class="align-middle text-center">
-                  <div class="d-flex align-items-center justify-content-center">
-                    <span class="me-2 text-xs">{{ project.completion_percentage }}%</span>
-                    <div class="progress w-50">
-                      <div class="progress-bar bg-info" role="progressbar"
-                        style="width: {{ project.completion_percentage }}%;"
-                        aria-valuenow="{{ project.completion_percentage }}"
-                        aria-valuemin="0" aria-valuemax="100">
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td class="text-center">
-                  <span class="text-sm text-secondary">{{ project.deadline|date:"Y-m-d" }}</span>
-                </td>
 
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+<div class="container mt-6">
+  <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
+    <form method="get" class="d-flex mx-auto w-100" style="gap:10px;max-width:600px;">
+      <div class="input-group" style="height:42px;">
+        <span class="input-group-text d-flex align-items-center"><i class="ni ni-zoom-split-in"></i></span>
+        <input type="text" name="name" class="form-control" placeholder="Search by name" value="{{ request.GET.name }}">
+      </div>
+      <button class="btn btn-primary d-flex align-items-center" style="height:42px;">Search</button>
+    </form>
+
+    <a href="{% url 'task:project-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height:42px;">
+      <i class="ni ni-fat-add me-1"></i> Create
+    </a>
+  </div>
+</div>
+
+<div class="container my-5 px-3">
+  <div class="card shadow" style="border-radius:12px;">
+    <div class="card-body p-4">
+      <div class="table-responsive">
+        <h4 class="mb-4">Projects</h4>
+        <table class="table mb-0" style="border-collapse:separate;border-spacing:0 .5rem;">
+          <thead class="bg-light">
+            <tr>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Project</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Budget</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Completion</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Deadline</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for p in project_list %}
+            <tr class="align-middle" style="background:#fff;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,.05);">
+              <td class="px-3 py-3">
+                <a href="{% url 'task:project-detail' pk=p.id %}" class="text-dark text-sm fw-bold text-decoration-none">{{ p.name }}</a>
+              </td>
+              <td class="px-3 py-3 text-sm">
+                {% if p.budget %}${{ p.budget }}{% else %}<span class="text-muted">—</span>{% endif %}
+              </td>
+              <td class="px-3 py-3">
+                <div class="d-flex align-items-center">
+                  <span class="me-2 text-xs">{{ p.completion_percentage }}%</span>
+                  <div class="progress w-50">
+                    <div class="progress-bar bg-info" role="progressbar"
+                         style="width: {{ p.completion_percentage }}%;"></div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-3 py-3 text-sm text-secondary">{{ p.deadline|date:"Y-m-d" }}</td>
+              <td class="px-3 py-3 text-center">
+                <a href="{% url 'task:project-detail' pk=p.id %}" class="text-info fw-bold text-decoration-none" style="font-size:.875rem;">View</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="5" class="text-center text-muted py-5">No projects found</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-{% endblock content %}
+</div>
+{% endblock %}
