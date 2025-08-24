@@ -13,7 +13,7 @@ from .views import (
     TaskDetailView, TeamCreateView, ProjectCreateView, WorkerCreateView, TaskCreateView, UserTaskListView, TagListView,
     TaskTypeListView, TagCreateView, TaskTypeCreateView, TagUpdateView, TaskTypeUpdateView, TagDeleteView,
     TaskTypeDeleteView, TeamUpdateView, TeamDeleteView, WorkerDeleteView, WorkerUpdateView, ProjectDeleteView,
-    ProjectUpdateView,
+    ProjectUpdateView, TaskDeleteView, TaskUpdateView, mark_as_done,
 )
 
 urlpatterns = [
@@ -43,13 +43,16 @@ urlpatterns = [
     path("tasktypes/<int:pk>/update/", TaskTypeUpdateView.as_view(), name="tasktype-update"),
     path("workers/<int:pk>/update/", WorkerUpdateView.as_view(), name="worker-update"),
     path("projects/<int:pk>/update/", ProjectUpdateView.as_view(), name="project-update"),
+    path("tasks/<int:pk>/update/", TaskUpdateView.as_view(), name="task-update"),
 
     path("tags/<int:pk>/delete/", TagDeleteView.as_view(), name="tag-delete"),
     path("tasktypes/<int:pk>/delete/", TaskTypeDeleteView.as_view(), name="tasktype-delete"),
     path("teams/<int:pk>/delete/", TeamDeleteView.as_view(), name="team-delete"),
     path("workers/<int:pk>delete/", WorkerDeleteView.as_view(), name="worker-delete"),
     path("projects/<int:pk>/delete/", ProjectDeleteView.as_view(), name="project-delete"),
+    path("tasks/<int:pk>/delete/", TaskDeleteView.as_view(), name="task-delete"),
 
+    path("tasks/<int:pk>/mark-as-done/", mark_as_done, name="mark-as-done"),
 ]
 
 app_name = "task"

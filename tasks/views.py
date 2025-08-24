@@ -1,4 +1,8 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
+from django.contrib import messages
+from django.urls import reverse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 
 from .forms import TeamForm, ProjectForm, WorkerCreationForm, TaskForm, TaskTypeForm, TagForm
@@ -172,20 +176,29 @@ class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("task:tasktype-list")
 
 
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Task
+    form_class = TaskForm
+    success_url = reverse_lazy("task:task-list")
+
+
 class TeamUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Team
     form_class = TeamForm
     success_url = reverse_lazy("task:team-list")
+
 
 class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
     form_class = WorkerCreationForm
     success_url = reverse_lazy("task:worker-list")
 
+
 class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Project
     form_class = ProjectForm
     success_url = reverse_lazy("tasks:project-list")
+
 
 class TagDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Tag
@@ -201,10 +214,36 @@ class TeamDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Team
     success_url = reverse_lazy("task:team-list")
 
+
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Worker
     success_url = reverse_lazy("task:worker-list")
 
+
 class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Project
     success_url = reverse_lazy("tasks:project-list")
+
+
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy("task:task-list")
+
+
+@login_required
+def mark_as_done(request, pk):
+    task = get_object_or_404(Task, id=pk)
+
+    worker = request.user
+
+    can_complete = (
+            worker in task.assignees.all() or
+            (task.project and task.project.teams.filter(lead=worker).exists())
+    )
+
+    if can_complete:
+        task.is_completed = True
+        task.save()
+        return redirect(f'/tasks/{pk}/?success=1')
+
+    return redirect(f'/tasks/{pk}/?error=1')
