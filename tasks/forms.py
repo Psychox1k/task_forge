@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django_select2.forms import ModelSelect2MultipleWidget
 
-from .models import Team, Worker, Project, Task, Tag, TaskType
+from .models import Team, Worker, Project, Task, Tag, TaskType, Position
 
 
 class CustomLoginForm(AuthenticationForm):
@@ -125,4 +125,10 @@ class TagForm(forms.ModelForm):
 class TaskTypeForm(forms.ModelForm):
     class Meta:
         model = TaskType
+        fields = "__all__"
+
+
+class PositionForm(forms.ModelForm):
+    class Meta:
+        model = Position
         fields = "__all__"
