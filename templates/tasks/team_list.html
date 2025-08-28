@@ -2,6 +2,7 @@
 {% block title %}Teams{% endblock %}
 {% block content %}
 
+  <!-- Search + Create -->
 <div class="container mt-6">
   <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
     <form method="get" class="d-flex mx-auto w-100" style="gap:10px;max-width:600px;">
@@ -12,12 +13,13 @@
       <button class="btn btn-primary d-flex align-items-center" style="height:42px;">Search</button>
     </form>
 
-    <a href="{% url 'task:team-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height:42px;">
+    <a href="{% url 'tasks:team-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height:42px;">
       <i class="ni ni-fat-add me-1"></i> Create
     </a>
   </div>
 </div>
 
+ <!-- Table Section -->
 <div class="container my-5 px-3">
   <div class="card shadow" style="border-radius:12px;">
     <div class="card-body p-4">

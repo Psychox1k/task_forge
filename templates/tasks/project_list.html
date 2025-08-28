@@ -2,22 +2,26 @@
 {% block title %}Projects{% endblock %}
 {% block content %}
 
-<div class="container mt-6">
-  <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
-    <form method="get" class="d-flex mx-auto w-100" style="gap:10px;max-width:600px;">
-      <div class="input-group" style="height:42px;">
-        <span class="input-group-text d-flex align-items-center"><i class="ni ni-zoom-split-in"></i></span>
-        <input type="text" name="name" class="form-control" placeholder="Search by name" value="{{ request.GET.name }}">
-      </div>
-      <button class="btn btn-primary d-flex align-items-center" style="height:42px;">Search</button>
-    </form>
-
-    <a href="{% url 'task:project-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height:42px;">
-      <i class="ni ni-fat-add me-1"></i> Create
-    </a>
+  
+  <!-- Search and Create Section -->
+  <div class="container mt-6">
+    <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
+      <form method="get" class="d-flex mx-auto w-100" style="gap:10px;max-width:600px;">
+        <div class="input-group" style="height:42px;">
+          <span class="input-group-text d-flex align-items-center"><i class="ni ni-zoom-split-in"></i></span>
+          <input type="text" name="name" class="form-control" placeholder="Search by name" value="{{ request.GET.name }}">
+        </div>
+        <button class="btn btn-primary d-flex align-items-center" style="height:42px;">Search</button>
+      </form>
+  
+      <a href="{% url 'tasks:project-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height:42px;">
+        <i class="ni ni-fat-add me-1"></i> Create
+      </a>
+    </div>
   </div>
-</div>
 
+  
+   <!-- Table Section -->
 <div class="container my-5 px-3">
   <div class="card shadow" style="border-radius:12px;">
     <div class="card-body p-4">
@@ -37,7 +41,7 @@
           {% for p in project_list %}
             <tr class="align-middle" style="background:#fff;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,.05);">
               <td class="px-3 py-3">
-                <a href="{% url 'task:project-detail' pk=p.id %}" class="text-dark text-sm fw-bold text-decoration-none">{{ p.name }}</a>
+                <a href="{% url 'tasks:project-detail' pk=p.id %}" class="text-dark text-sm fw-bold text-decoration-none">{{ p.name }}</a>
               </td>
               <td class="px-3 py-3 text-sm">
                 {% if p.budget %}${{ p.budget }}{% else %}<span class="text-muted">—</span>{% endif %}
@@ -53,7 +57,7 @@
               </td>
               <td class="px-3 py-3 text-sm text-secondary">{{ p.deadline|date:"Y-m-d" }}</td>
               <td class="px-3 py-3 text-center">
-                <a href="{% url 'task:project-detail' pk=p.id %}" class="text-info fw-bold text-decoration-none" style="font-size:.875rem;">View</a>
+                <a href="{% url 'tasks:project-detail' pk=p.id %}" class="text-info fw-bold text-decoration-none" style="font-size:.875rem;">View</a>
               </td>
             </tr>
           {% empty %}

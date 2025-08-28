@@ -10,18 +10,20 @@
       <div class="col-9">
     <h2 class="mb-4">Team: {{ team.name }}</h2>
         </div>
+      
+      <!-- Action Buttons-->
       <div class="col-1">
-       <a href="{% url 'task:team-update' pk=team.id %}" class="btn btn-info" >
+       <a href="{% url 'tasks:team-update' pk=team.id %}" class="btn btn-info" >
           Edit
        </a>
         </div>
        <div class="col-1">
-       <a href="{% url 'task:team-delete' pk=team.id %}" class="btn btn-danger" >
+       <a href="{% url 'tasks:team-delete' pk=team.id %}" class="btn btn-danger" >
             Delete
        </a>
         </div>
     </div>
-
+     <!-- Main Information-->
     <div class="mb-3">
       <strong>Leader:</strong> {{ team.lead.username }}
     </div>
@@ -39,6 +41,7 @@
       </ul>
     </div>
   
+   <!-- Table Section -->
     <h4 class="mt-4 mb-3">Team Projects</h4> 
     <table class="table table-bordered table-hover">
       <thead class="table-light">

@@ -74,10 +74,10 @@
             Tasks <i class="fas fa-chevron-down text-sm ms-1" style="color: white !important;"></i>
           </a>
           <ul class="dropdown-menu dropdown-menu-soft" aria-labelledby="navbarDropdownTasks">
-            <li><a class="dropdown-item" href="{% url 'task:mytask-list' %}">My Tasks</a></li>
-            <li><a class="dropdown-item" href="{% url 'task:task-list' %}">All Tasks</a></li>
-            <li><a class="dropdown-item" href="{% url 'task:tasktype-list' %}">Task Types</a></li>
-            <li><a class="dropdown-item" href="{% url 'task:tag-list' %}">Tags</a></li>
+            <li><a class="dropdown-item" href="{% url 'tasks:mytask-list' %}">My Tasks</a></li>
+            <li><a class="dropdown-item" href="{% url 'tasks:task-list' %}">All Tasks</a></li>
+            <li><a class="dropdown-item" href="{% url 'tasks:tasktype-list' %}">Task Types</a></li>
+            <li><a class="dropdown-item" href="{% url 'tasks:tag-list' %}">Tags</a></li>
           </ul>
         </li>
       </ul>
@@ -94,7 +94,7 @@
             </form>
           </li>
           <li class="nav-item px-2">
-            <a class="btn bg-gradient-primary mb-0 px-3" href="{% url 'task:worker-detail' pk=user.id %}">
+            <a class="btn bg-gradient-primary mb-0 px-3" href="{% url 'tasks:worker-detail' pk=user.id %}">
               👤 {{ user.username }}
             </a>
           </li>

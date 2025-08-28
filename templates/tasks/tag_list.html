@@ -9,6 +9,7 @@
 
 {% block content %}
   
+  <!-- Search and Create Section -->
     <div class="container mt-6">
         <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
       
@@ -20,7 +21,7 @@
         <button type="submit" class="btn btn-primary d-flex align-items-center" style="height: 42px;">Search</button>
       </form>
       
-          <a href="{% url 'task:team-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height: 42px;">
+          <a href="{% url 'tasks:team-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height: 42px;">
             <i class="ni ni-fat-add me-1"></i> Create
           </a>
       
@@ -29,7 +30,7 @@
   
   
   
-  
+   <!-- Table Section -->
   <div class="card my-4 mx-auto" style="max-width: 960px;">
   <div class="card-header pb-0">
     <h6 class="text-uppercase text-center">Task Tags List</h6>
@@ -50,10 +51,10 @@
             <tr>
           <td>{{ tag.name }}</td>
             <td>
-              <a href="{% url 'task:tag-update' pk=tag.id%}" class="link-edit">Edit</a>
+              <a href="{% url 'tasks:tag-update' pk=tag.id%}" class="link-edit">Edit</a>
             </td>
             <td>
-              <a href="{% url 'task:tag-delete' pk=tag.id%}" class="link-delete">Delete</a>
+              <a href="{% url 'tasks:tag-delete' pk=tag.id%}" class="link-delete">Delete</a>
             </td>
             </tr>
 
