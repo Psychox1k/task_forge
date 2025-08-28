@@ -7,8 +7,10 @@ class TaskType(models.Model):
 
     class Meta:
         ordering = ["name"]
+
     def __str__(self):
         return self.name
+
 
 class Position(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -27,10 +29,8 @@ class Worker(AbstractUser):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="workers"
+        related_name="workers",
     )
-
-
 
     class Meta:
         verbose_name = "worker"
@@ -47,11 +47,13 @@ class Worker(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.get_full_name()})"
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.name
+
 
 class Team(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -62,7 +64,7 @@ class Team(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="leading_teams"
+        related_name="leading_teams",
     )
 
     class Meta:
@@ -80,18 +82,11 @@ class Team(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True)
-    budget = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        null=True,
-        blank=True
-    )
+    budget = models.DecimalField(max_digits=12, decimal_places=2,
+                                 null=True, blank=True)
     deadline = models.DateField()
 
-    teams = models.ManyToManyField(
-        Team,
-        related_name="projects"
-    )
+    teams = models.ManyToManyField(Team, related_name="projects")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -128,33 +123,27 @@ class Task(models.Model):
     is_completed = models.BooleanField(default=False)
 
     priority = models.CharField(
-        max_length=50,
-        choices=PRIORITY_CHOICES,
-        default="medium")
+        max_length=50, choices=PRIORITY_CHOICES, default="medium"
+    )
 
     task_type = models.ForeignKey(
         TaskType,
         on_delete=models.SET_NULL,
         null=True,
-        related_name="tasks")
-
-    assignees = models.ManyToManyField(
-        Worker,
-        related_name="assigned_tasks"
+        related_name="tasks"
     )
+
+    assignees = models.ManyToManyField(Worker, related_name="assigned_tasks")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    tags = models.ManyToManyField(
-        Tag,
-        blank=True,
-        related_name="tasks"
-    )
+    tags = models.ManyToManyField(Tag,
+                                  blank=True,
+                                  related_name="tasks")
 
     project = models.ForeignKey(
-        Project,
-        on_delete=models.SET_NULL,
+        Project, on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="tasks"
@@ -165,5 +154,3 @@ class Task(models.Model):
 
     def __str__(self):
         return f"{self.name} (priority: {self.priority})"
-
-

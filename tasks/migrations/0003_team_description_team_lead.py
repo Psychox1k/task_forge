@@ -8,18 +8,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tasks', '0002_project_budget'),
+        ("tasks", "0002_project_budget"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='team',
-            name='description',
+            model_name="team",
+            name="description",
             field=models.TextField(blank=True),
         ),
         migrations.AddField(
-            model_name='team',
-            name='lead',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='leading_teams', to=settings.AUTH_USER_MODEL),
+            model_name="team",
+            name="lead",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="leading_teams",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

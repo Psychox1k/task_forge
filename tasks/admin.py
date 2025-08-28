@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import Worker, Task, Team, Project, TaskType, Tag, Position
 
+
 @admin.register(Worker)
 class WorkerAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("position",)
@@ -10,15 +11,17 @@ class WorkerAdmin(UserAdmin):
     )
 
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ("Additional info", {
-            "fields": (
-                "first_name",
-                "last_name",
-                "email",
-                "position",
-
-            )
-        }),
+        (
+            "Additional info",
+            {
+                "fields": (
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "position",
+                )
+            },
+        ),
     )
 
 
@@ -28,4 +31,3 @@ admin.site.register(TaskType)
 admin.site.register(Team)
 admin.site.register(Project)
 admin.site.register(Position)
-

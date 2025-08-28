@@ -10,11 +10,33 @@ from .views import (
     WorkerDetailView,
     ProjectDetailView,
     TeamDetailView,
-    TaskDetailView, TeamCreateView, ProjectCreateView, WorkerCreateView, TaskCreateView, UserTaskListView, TagListView,
-    TaskTypeListView, TagCreateView, TaskTypeCreateView, TagUpdateView, TaskTypeUpdateView, TagDeleteView,
-    TaskTypeDeleteView, TeamUpdateView, TeamDeleteView, WorkerDeleteView, WorkerUpdateView, ProjectDeleteView,
-    ProjectUpdateView, TaskDeleteView, TaskUpdateView, mark_as_done, PositionListView, PositionDeleteView,
-    PositionUpdateView, PositionCreateView,
+    TaskDetailView,
+    TeamCreateView,
+    ProjectCreateView,
+    WorkerCreateView,
+    TaskCreateView,
+    UserTaskListView,
+    TagListView,
+    TaskTypeListView,
+    TagCreateView,
+    TaskTypeCreateView,
+    TagUpdateView,
+    TaskTypeUpdateView,
+    TagDeleteView,
+    TaskTypeDeleteView,
+    TeamUpdateView,
+    TeamDeleteView,
+    WorkerDeleteView,
+    WorkerUpdateView,
+    ProjectDeleteView,
+    ProjectUpdateView,
+    TaskDeleteView,
+    TaskUpdateView,
+    mark_as_done,
+    PositionListView,
+    PositionDeleteView,
+    PositionUpdateView,
+    PositionCreateView,
 )
 
 urlpatterns = [
@@ -27,12 +49,10 @@ urlpatterns = [
     path("tags/", TagListView.as_view(), name="tag-list"),
     path("tasktypes/", TaskTypeListView.as_view(), name="tasktype-list"),
     path("positions/", PositionListView.as_view(), name="position-list"),
-
     path("workers/<int:pk>/", WorkerDetailView.as_view(), name="worker-detail"),
     path("projects/<int:pk>/", ProjectDetailView.as_view(), name="project-detail"),
     path("teams/<int:pk>/", TeamDetailView.as_view(), name="team-detail"),
     path("tasks/<int:pk>/", TaskDetailView.as_view(), name="task-detail"),
-
     path("teams/create/", TeamCreateView.as_view(), name="team-create"),
     path("projects/create/", ProjectCreateView.as_view(), name="project-create"),
     path("workers/create/", WorkerCreateView.as_view(), name="worker-create"),
@@ -40,26 +60,41 @@ urlpatterns = [
     path("tags/create/", TagCreateView.as_view(), name="tag-create"),
     path("tasktypes/create/", TaskTypeCreateView.as_view(), name="tasktype-create"),
     path("positions/create/", PositionCreateView.as_view(), name="position-create"),
-
-
     path("tags/<int:pk>/update/", TagUpdateView.as_view(), name="tag-update"),
     path("teams/<int:pk>/update/", TeamUpdateView.as_view(), name="team-update"),
-    path("tasktypes/<int:pk>/update/", TaskTypeUpdateView.as_view(), name="tasktype-update"),
+    path(
+        "tasktypes/<int:pk>/update/",
+        TaskTypeUpdateView.as_view(),
+        name="tasktype-update",
+    ),
     path("workers/<int:pk>/update/", WorkerUpdateView.as_view(), name="worker-update"),
-    path("projects/<int:pk>/update/", ProjectUpdateView.as_view(), name="project-update"),
+    path(
+        "projects/<int:pk>/update/", ProjectUpdateView.as_view(), name="project-update"
+    ),
     path("tasks/<int:pk>/update/", TaskUpdateView.as_view(), name="task-update"),
-    path("positions/<int:pk>/update/", PositionUpdateView.as_view(), name="position-update"),
-
+    path(
+        "positions/<int:pk>/update/",
+        PositionUpdateView.as_view(),
+        name="position-update",
+    ),
     path("tags/<int:pk>/delete/", TagDeleteView.as_view(), name="tag-delete"),
-    path("tasktypes/<int:pk>/delete/", TaskTypeDeleteView.as_view(), name="tasktype-delete"),
+    path(
+        "tasktypes/<int:pk>/delete/",
+        TaskTypeDeleteView.as_view(),
+        name="tasktype-delete",
+    ),
     path("teams/<int:pk>/delete/", TeamDeleteView.as_view(), name="team-delete"),
     path("workers/<int:pk>delete/", WorkerDeleteView.as_view(), name="worker-delete"),
-    path("projects/<int:pk>/delete/", ProjectDeleteView.as_view(), name="project-delete"),
+    path(
+        "projects/<int:pk>/delete/", ProjectDeleteView.as_view(), name="project-delete"
+    ),
     path("tasks/<int:pk>/delete/", TaskDeleteView.as_view(), name="task-delete"),
-    path("positions/<int:pk>/delete/", PositionDeleteView.as_view(), name="position-delete"),
-
+    path(
+        "positions/<int:pk>/delete/",
+        PositionDeleteView.as_view(),
+        name="position-delete",
+    ),
     path("tasks/<int:pk>/mark-as-done/", mark_as_done, name="mark-as-done"),
 ]
 
-app_name = "task"
-
+app_name = "tasks"
