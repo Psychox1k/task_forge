@@ -33,7 +33,7 @@ def index(request):
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
-    paginate_by = 2
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = Worker.objects.all()
@@ -101,7 +101,7 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
-    paginate_by = 10
+    paginate_by = 8
 
     def get_queryset(self):
         queryset = Task.objects.all()
