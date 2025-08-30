@@ -11,7 +11,7 @@ var browserSync = require('browser-sync').create();
 var cleanCss = require('gulp-clean-css');
 var gulp = require('gulp');
 const npmDist = require('gulp-npm-dist');
-var sass = require('gulp-sass')(require('node-sass'));
+var sass = require('gulp-sass')(require('sass'));
 var wait = require('gulp-wait');
 var sourcemaps = require('gulp-sourcemaps');
 var rename = require("gulp-rename");
@@ -57,3 +57,6 @@ gulp.task('minify:css', function() {
 
 // Default Task: Compile SCSS and minify the result
 gulp.task('default', gulp.series('scss', 'minify:css'));
+gulp.task('watch', function() {
+  gulp.watch(paths.src.scss + '/**/*.scss', gulp.series('scss', 'minify:css'));
+});
