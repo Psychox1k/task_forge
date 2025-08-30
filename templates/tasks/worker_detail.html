@@ -1,103 +1,148 @@
 {% extends 'layouts/base-presentation.html' %}
-
-{% block title %}{{ worker.username }}'s Profile{% endblock title %}
-
-{% block stylesheets %}{% endblock stylesheets %}
+{% block title %}{{ worker.username }}'s Profile{% endblock %}
 
 {% block content %}
-  <div class="container my-5">
-   <div class="row">
-  <div class="col-9">
-    <h2 class="mb-4">Worker: {{ worker.username }}</h2>
+<div class="container my-5">
+
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h2 class="mb-0">Worker: {{ worker.username }}</h2>
+      <div class="text-muted small">
+        {{ worker.first_name }} {{ worker.last_name }} · {{ worker.email }} · {{ worker.position|default:"—" }}
+      </div>
+    </div>
+    <div class="d-flex gap-2">
+      <a href="{% url 'tasks:worker-update' pk=worker.id %}" class="btn btn-info">Edit</a>
+      <a href="{% url 'tasks:worker-delete' pk=worker.id %}" class="btn btn-danger">Delete</a>
+    </div>
   </div>
-     
-     <!-- Action Buttons-->
-    <div class="col-1">
-       <a href="{% url 'tasks:worker-update' pk=worker.id %}" class="btn btn-info" >
-          Edit
-       </a>
-        </div>
-       <div class="col-1">
-       <a href="{% url 'tasks:worker-delete' pk=worker.id %}" class="btn btn-danger" >
-            Delete
-       </a>
-        </div>
-    </div>
 
-      <!-- Main Information-->
-  
-    <div class="mb-3">
-      <strong>Full Name:</strong> {{ worker.first_name }} {{ worker.last_name }}
-    </div>
-
-    <div class="mb-3">
-      <strong>Email:</strong> {{ worker.email }}
-    </div>
-    <div class="mb-3">
-      <strong>Position:</strong> {{ worker.position }}
-    </div>
-
-    
-
-    <div class="mb-3">
+  {% if worker.teams.exists %}
+    <div class="mb-4">
       <strong>Teams:</strong>
-      <ul>
+      <ul class="mb-0">
         {% for team in worker.teams.all %}
-          <li>{{ team.name }}</li>
-        {% empty %}
-          <li>No teams assigned.</li>
+          <li><a href="{% url 'tasks:team-detail' pk=team.id %}" class="text-decoration-none">{{ team.name }}</a></li>
         {% endfor %}
       </ul>
     </div>
-  
- <!-- Table Section -->
-    <h4 class="mt-4 mb-3">Tasks Assigned to {{ worker.username }}:</h4>
-    <table class="table table-bordered table-hover">
-      <thead class="table-light">
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Deadline</th>
-            <th>Task type</th>
-            <th>Priority</th>
-            
-            <th>Tag</th>
-            <th>Project</th>
-            <th>Completion</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for task in worker.assigned_tasks.all %}
-          <tr>
-            <td>{{ task.name }}</td>
-            <td>{{ task.description }}</td>
-            <td>{{ task.deadline }}</td>
-            <td>{{ task.project.name }}</td>
-            <td>{{ task.task_type }}</td>
-            <td>{{ task.priority }}</td>
-            <td>
-              {% for tag in task.tags.all %}
-                <span class="badge bg-info text-dark me-1">{{ tag.name }}</span>
-              {% empty %}
-                <span class="text-muted">No tags</span>
-              {% endfor %}
-            </td>
-          <td>
-                    {% if task.ic_completed %}
-                      <span class="badge bg-success">Completed</span>
-                    {% else %}
-                      <span class="badge bg-secondary">Pending</span>
-                    {% endif %}
-                  </td>
-          </tr>
-        {% empty %}
-          <tr>
-            <td colspan="4">No tasks assigned to this worker.</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  {% endif %}
 
-    <a href="{% url 'tasks:worker-list' %}" class="btn btn-secondary mt-3">Back to Workers List</a>
+  <ul class="nav nav-tabs" id="tasksTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed-pane" type="button" role="tab">
+        ✅ Completed ({{ worker.completed_tasks.count }})
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending-pane" type="button" role="tab">
+        ⌛ Pending ({{ worker.pending_tasks.count }})
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content pt-3" id="tasksTabsContent">
+    <!-- Completed -->
+    <div class="tab-pane fade show active" id="completed-pane" role="tabpanel" aria-labelledby="completed-tab" tabindex="0">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Deadline</th>
+              <th>Task type</th>
+              <th>Priority</th>
+              <th>Tags</th>
+              <th>Project</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in worker.completed_tasks %}
+              <tr>
+                <td class="fw-semibold">{{ task.name }}</td>
+                <td class="text-truncate" style="max-width: 360px;">{{ task.description }}</td>
+                <td>{{ task.deadline|date:"M d, Y H:i" }}</td>
+                <td>{{ task.task_type|default:"—" }}</td>
+                <td>
+                  {% if task.priority == "critical" %}
+                    <span class="badge bg-danger">Critical</span>
+                  {% elif task.priority == "high" %}
+                    <span class="badge bg-gradient-danger">High</span>
+                  {% elif task.priority == "medium" %}
+                    <span class="badge bg-gradient-warning">Medium</span>
+                  {% else %}
+                    <span class="badge bg-gradient-success">Low</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% for tag in task.tags.all %}
+                    <span class="badge bg-light text-dark border me-1">{{ tag.name }}</span>
+                  {% empty %}
+                    <span class="text-muted">No tags</span>
+                  {% endfor %}
+                </td>
+                <td>{{ task.project.name|default:"—" }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="7" class="text-muted">No completed tasks.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pending -->
+    <div class="tab-pane fade" id="pending-pane" role="tabpanel" aria-labelledby="pending-tab" tabindex="0">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Deadline</th>
+              <th>Task type</th>
+              <th>Priority</th>
+              <th>Tags</th>
+              <th>Project</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in worker.pending_tasks %}
+              <tr>
+                <td class="fw-semibold">{{ task.name }}</td>
+                <td class="text-truncate" style="max-width: 360px;">{{ task.description }}</td>
+                <td>{{ task.deadline|date:"M d, Y H:i" }}</td>
+                <td>{{ task.task_type|default:"—" }}</td>
+                <td>
+                   {% if task.priority == "critical" %}
+                    <span class="badge bg-danger">Critical</span>
+                  {% elif task.priority == "high" %}
+                    <span class="badge bg-gradient-danger">High</span>
+                  {% elif task.priority == "medium" %}
+                    <span class="badge bg-gradient-warning">Medium</span>
+                  {% else %}
+                    <span class="badge bg-gradient-success">Low</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% for tag in task.tags.all %}
+                    <span class="badge bg-light text-dark border me-1">{{ tag.name }}</span>
+                  {% empty %}
+                    <span class="text-muted">No tags</span>
+                  {% endfor %}
+                </td>
+                <td>{{ task.project.name|default:"—" }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="7" class="text-muted">No pending tasks.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-{% endblock content %}
+
+  <a href="{% url 'tasks:worker-list' %}" class="btn btn-outline-secondary mt-3">Back to Workers List</a>
+</div>
+{% endblock %}

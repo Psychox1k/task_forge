@@ -2,86 +2,118 @@
 
 {% block title %}Project: {{ project.name }}{% endblock title %}
 
-{% block stylesheets %}{% endblock stylesheets %}
-
 {% block content %}
-  <div class="container my-5">
-   <div class="row">
-  <div class="col-9">
-    <h2 class="mb-4">Project {{ project.name }}</h2>
-    </div>
-      <!-- Action Buttons-->
-     <div class="col-1">
-       <a href="{% url 'tasks:project-update' pk=project.id %}" class="btn btn-info" >
-          Edit
-       </a>
-        </div>
-       <div class="col-1">
-       <a href="{% url 'tasks:project-delete' pk=project.id %}" class="btn btn-danger" >
-            Delete
-       </a>
-        </div>
-   </div>
-   <!-- Main Information-->
+<div class="container my-5">
 
-    <div class="mb-3">
-      <strong>Description:</strong> {{ project.description }}
+  <!-- Header + actions -->
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h2 class="mb-1">{{ project.name }}</h2>
+      <div class="text-muted small">
+        Created: {{ project.created_at|date:"M d, Y H:i" }} ·
+        Deadline: {{ project.deadline|date:"M d, Y" }}
+      </div>
     </div>
-    <div class="mb-3">
-      <strong>Completion:</strong> {{ project.completion_percentage }}%
+    <div class="d-flex gap-2">
+      <a href="{% url 'tasks:project-update' pk=project.id %}" class="btn btn-info">Edit</a>
+      <a href="{% url 'tasks:project-delete' pk=project.id %}" class="btn btn-danger">Delete</a>
     </div>
-    <div class="mb-3">
-      <strong>Start Date:</strong> {{ project.created_at }}
+  </div>
+
+  <!-- Meta card -->
+  <div class="card mb-4 shadow-sm border-0">
+    <div class="card-body">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-8">
+          <h6 class="text-uppercase text-muted mb-2">Description</h6>
+          <p class="mb-0">{{ project.description|default:"—" }}</p>
+        </div>
+        <div class="col-md-4">
+          <h6 class="text-uppercase text-muted mb-2">Completion</h6>
+          <div class="d-flex align-items-center">
+            <span class="me-2 fw-semibold">{{ project.completion_percentage }}%</span>
+            <div class="progress flex-grow-1" style="height: 8px;">
+              <div class="progress-bar bg-info"
+                   role="progressbar"
+                   style="width: {{ project.completion_percentage }}%;"
+                   aria-valuenow="{{ project.completion_percentage }}"
+                   aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if project.teams.exists %}
+        <hr class="my-4">
+        <h6 class="text-uppercase text-muted mb-2">Teams</h6>
+        <div class="d-flex flex-wrap gap-2">
+          {% for team in project.teams.all %}
+            <a href="{% url 'tasks:team-detail' pk=team.id %}" class="badge bg-secondary text-decoration-none">
+              {{ team.name }}
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
-    <div class="mb-3">
-      <strong>End Date:</strong> {{ project.deadline }}
-    </div>
-  
- <!-- Table Section -->
-    <h4 class="mt-4 mb-3">Tasks for {{ project.name }}:</h4>
-    <table class="table table-bordered table-hover">
+  </div>
+
+  <!-- Tasks table -->
+  <h4 class="mb-3">Tasks</h4>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
       <thead class="table-light">
         <tr>
           <th>Title</th>
           <th>Description</th>
-          <th>Task type</th>
+          <th>Type</th>
           <th>Priority</th>
           <th>Deadline</th>
-          <th>Tag</th>
-          <th>Completion</th>
+          <th>Tags</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
         {% for task in project.tasks.all %}
           <tr>
-                  <td>{{ task.name }}</td>
-                  <td>{{ task.description }}</td>
-                  <td>{{ task.task_type }}</td>
-                  <td>{{ task.priority }}</td>
-                  <td>{{ task.deadline }}</td>
-                  <td>
-                    {% for tag in task.tags.all %}
-                      <span class="badge bg-info text-dark me-1">{{ tag.name }}</span>
-                    {% empty %}
-                      <span class="text-muted">No tags</span>
-                    {% endfor %}
-                  </td>
-                  <td>
-                    {% if task.ic_completed %}
-                      <span class="badge bg-success">Completed</span>
-                    {% else %}
-                      <span class="badge bg-secondary">Pending</span>
-                    {% endif %}
-                  </td>
-                </tr>
+            <td class="fw-semibold">{{ task.name }}</td>
+            <td class="text-truncate" style="max-width: 360px;">{{ task.description }}</td>
+            <td>{{ task.task_type|default:"—" }}</td>
+            <td>
+              {% if task.priority == "critical" %}
+                <span class="badge bg-danger text-uppercase">Critical</span>
+              {% elif task.priority == "high" %}
+                <span class="badge bg-warning text-dark text-uppercase">High</span>
+              {% elif task.priority == "medium" %}
+                <span class="badge bg-info text-dark text-uppercase">Medium</span>
+              {% else %}
+                <span class="badge bg-secondary text-uppercase">Low</span>
+              {% endif %}
+            </td>
+            <td>{{ task.deadline|date:"M d, Y H:i" }}</td>
+            <td>
+              {% for tag in task.tags.all %}
+                <span class="badge bg-light text-dark border me-1">{{ tag.name }}</span>
+              {% empty %}
+                <span class="text-muted">No tags</span>
+              {% endfor %}
+            </td>
+            <td>
+              {% if task.is_completed %}
+                <span class="badge bg-success">Completed</span>
+              {% else %}
+                <span class="badge bg-secondary">Pending</span>
+              {% endif %}
+            </td>
+          </tr>
         {% empty %}
           <tr>
-            <td colspan="5">No tasks available for this project.</td>
+            <td colspan="7" class="text-center text-muted py-4">No tasks for this project yet.</td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
-
-    <a href="{% url 'tasks:project-list' %}" class="btn btn-secondary mt-3">Back to Projects List</a>
   </div>
+
+  <a href="{% url 'tasks:project-list' %}" class="btn btn-outline-secondary mt-3">Back to Projects</a>
+</div>
 {% endblock content %}

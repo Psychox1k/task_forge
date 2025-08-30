@@ -1,84 +1,137 @@
-{% extends 'layouts/base-presentation.html' %}
+{% extends "layouts/base-presentation.html" %}
+{% load humanize %} {# для intcomma/апострофов в числах #}
 
-{% block title %}Workers{% endblock title %}
-
-{% block stylesheets %}{% endblock stylesheets %}
+{% block title %}Team · {{ team.name }}{% endblock %}
 
 {% block content %}
-  <div class="container my-5">
-    <div class="row">
-      <div class="col-9">
-    <h2 class="mb-4">Team: {{ team.name }}</h2>
+<div class="container my-5">
+
+  <!-- Header row -->
+  <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+    <h2 class="mb-0">{{ team.name }}</h2>
+
+    <div class="ms-auto">
+      <a href="{% url 'tasks:team-update' pk=team.id %}" class="btn btn-info me-2">Edit</a>
+      <a href="{% url 'tasks:team-delete' pk=team.id %}" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="text-muted text-uppercase small mb-1">Leader</div>
+          <div class="fw-semibold">
+            {{ team.lead.username|default:"—" }}
+          </div>
+          {% if team.lead %}
+            <div class="text-muted small">{{ team.lead.first_name }} {{ team.lead.last_name }}</div>
+          {% endif %}
         </div>
-      
-      <!-- Action Buttons-->
-      <div class="col-1">
-       <a href="{% url 'tasks:team-update' pk=team.id %}" class="btn btn-info" >
-          Edit
-       </a>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="text-muted text-uppercase small mb-1">Members</div>
+          <div class="fw-semibold">{{ team.members.count }}</div>
+          <div class="mt-2">
+            {% if team.members.exists %}
+              {% for m in team.members.all %}
+                <span class="badge bg-secondary me-1 mb-1">{{ m.username }}</span>
+              {% endfor %}
+            {% else %}
+              <span class="text-muted">No members</span>
+            {% endif %}
+          </div>
         </div>
-       <div class="col-1">
-       <a href="{% url 'tasks:team-delete' pk=team.id %}" class="btn btn-danger" >
-            Delete
-       </a>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="text-muted text-uppercase small mb-1">About</div>
+          <div class="text-muted">
+            {{ team.description|default:"No description" }}
+          </div>
         </div>
+      </div>
     </div>
-     <!-- Main Information-->
-    <div class="mb-3">
-      <strong>Leader:</strong> {{ team.lead.username }}
+  </div>
+
+  <!-- Projects -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-light">
+      <div class="d-flex align-items-center">
+        <h5 class="mb-0">Team Projects</h5>
+        <span class="badge bg-info ms-2">{{ team.projects.count }}</span>
+      </div>
     </div>
-    <div class="mb-3">
-      <strong>Description:</strong> {{ team.description }}
-    </div>
-    <div class="mb-3">
-      <strong>Members:</strong>
-      <ul>
-        {% for member in team.members.all %}
-          <li>{{ member.username }}</li>
-        {% empty %}
-          <li>No members in this team.</li>
-        {% endfor %}
-      </ul>
-    </div>
-  
-   <!-- Table Section -->
-    <h4 class="mt-4 mb-3">Team Projects</h4> 
-    <table class="table table-bordered table-hover">
-      <thead class="table-light">
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Budget</th>
-          <th>Deadline</th>
-          <th>Completion</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for project in team.projects.all %}
-        <tr>
-          <td>{{ project.name }}</td>
-          <td>{{ project.description }}</td>
-          <td>{{ project.budget }}</td>
-          <td>{{ project.deadline }}</td>
-          <td>
-            <div class="d-flex align-items-center justify-content-center">
-                    <span class="me-2 text-xs">{{ project.completion_percentage }}%</span>
-                    <div class="progress w-50">
-                      <div class="progress-bar bg-info" role="progressbar"
-                        style="width: {{ project.completion_percentage }}%;"
-                        aria-valuenow="{{ project.completion_percentage }}"
-                        aria-valuemin="0" aria-valuemax="100">
+    <div class="card-body p-0">
+      {% if team.projects.exists %}
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th style="min-width: 220px;">Name</th>
+                <th>Description</th>
+                <th class="text-end" style="width: 140px;">Budget</th>
+                <th style="width: 140px;">Deadline</th>
+                <th style="width: 220px;">Completion</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for project in team.projects.all %}
+                <tr>
+                  <td class="fw-semibold">
+                    <a href="{% url 'tasks:project-detail' pk=project.id %}" class="text-decoration-none">
+                      {{ project.name }}
+                    </a>
+                  </td>
+                  <td class="text-muted">
+                    <span class="d-inline-block text-truncate" style="max-width: 520px;">
+                      {{ project.description|default:"—" }}
+                    </span>
+                  </td>
+                  <td class="text-end">
+                    {% if project.budget %}
+                      ${{ project.budget|floatformat:2|intcomma }}
+                    {% else %}
+                      <span class="text-muted">—</span>
+                    {% endif %}
+                  </td>
+                  <td>{{ project.deadline|date:"M d, Y" }}</td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="text-muted small" style="width: 36px;">{{ project.completion_percentage }}%</span>
+                      <div class="progress flex-grow-1" style="height: 8px;">
+                        <div class="progress-bar bg-info"
+                             role="progressbar"
+                             style="width: {{ project.completion_percentage }}%;"
+                             aria-valuenow="{{ project.completion_percentage }}"
+                             aria-valuemin="0" aria-valuemax="100">
+                        </div>
                       </div>
                     </div>
-                  </div>
-          </td>
-        </tr>
-          {% empty %}
-          There is no projects
-      {% endfor %}
-      </tbody>
-    </table>
-
-    <a href="{% url 'tasks:team-list' %}" class="btn btn-secondary mt-3">Back to Team List</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="p-4 text-center text-muted">
+          No projects yet.
+        </div>
+      {% endif %}
+    </div>
   </div>
-{% endblock content %}
+
+  <div class="mt-4">
+    <a href="{% url 'tasks:team-list' %}" class="btn btn-outline-secondary">Back to Teams</a>
+  </div>
+</div>
+{% endblock %}
