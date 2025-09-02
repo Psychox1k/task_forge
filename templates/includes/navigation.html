@@ -1,0 +1,109 @@
+<style>
+  .navbar-toggler-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    margin: 4px 0;
+    transition: all 0.3s ease;
+  }
+  .dropdown-menu-soft {
+    border-radius: 1rem;
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175);
+    padding: 1rem 1rem;
+    border: none;
+    background-color: #383d68 !important;
+    min-width: 200px;
+  }
+
+  .dropdown-menu-soft .dropdown-item {
+    font-weight: 500;
+    color: #e1d8d8;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+    border-radius: 0.5rem;
+  }
+
+  .dropdown-menu-soft .dropdown-item:hover {
+    background-color: #f0f2f5;
+    color: #052bea;
+  }
+
+</style>
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-gradient-dark z-index-3 py-3">
+
+
+  <div class="container">
+    <a class="navbar-brand text-white" href="{% url 'tasks:index' %}">
+      Task Forge
+    </a>
+
+    <!-- Burger button -->
+    <button class="navbar-toggler shadow-none ms-2" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navigation"
+            aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon mt-2">
+        <span class="navbar-toggler-bar bar1"></span>
+        <span class="navbar-toggler-bar bar2"></span>
+        <span class="navbar-toggler-bar bar3"></span>
+      </span>
+    </button>
+
+    <!-- Navigation menu -->
+    <div class="collapse navbar-collapse" id="navigation">
+      <ul class="navbar-nav d-flex justify-content-center align-items-center flex-grow-1">
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="{% url 'tasks:team-list' %}">Teams</a>
+        </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="{% url 'tasks:worker-list' %}">Workers</a>
+        </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="{% url 'tasks:project-list' %}">Projects</a>
+        </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="{% url 'tasks:position-list' %}">Positions</a>
+        </li>
+        <li class="nav-item dropdown dropdown-hover mx-2">
+          <a class="nav-link ps-2 d-flex justify-content-between align-items-center"
+             href="#" id="navbarDropdownTasks" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            Tasks <i class="fas fa-chevron-down text-sm ms-1" style="color: white !important;"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-soft" aria-labelledby="navbarDropdownTasks">
+            <li><a class="dropdown-item" href="{% url 'tasks:mytask-list' %}">My Tasks</a></li>
+            <li><a class="dropdown-item" href="{% url 'tasks:task-list' %}">All Tasks</a></li>
+            <li><a class="dropdown-item" href="{% url 'tasks:tasktype-list' %}">Task Types</a></li>
+            <li><a class="dropdown-item" href="{% url 'tasks:tag-list' %}">Tags</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- User panel -->
+      <ul class="navbar-nav ms-auto align-items-center">
+        {% if user.is_authenticated %}
+          <li class="nav-item px-2">
+            <form method="POST" action="{% url 'logout' %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link text-white p-0 m-0 align-middle">
+                <i class="fas fa-sign-out-alt me-1" style="color: white !important;"></i> Logout
+              </button>
+            </form>
+          </li>
+          <li class="nav-item px-2">
+            <a class="btn bg-gradient-primary mb-0 px-3" href="{% url 'tasks:worker-detail' pk=user.id %}">
+              👤 {{ user.username }}
+            </a>
+          </li>
+        {% else %}
+          <li class="nav-item px-3">
+            <a class="btn bg-gradient-primary mb-0" href="{% url 'login' %}">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

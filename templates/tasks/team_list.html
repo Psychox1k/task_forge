@@ -1,0 +1,71 @@
+{% extends 'layouts/base-presentation.html' %}
+{% block title %}Teams{% endblock %}
+{% block content %}
+
+  <!-- Search + Create -->
+<div class="container mt-6">
+  <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
+    <form method="get" class="d-flex mx-auto w-100" style="gap:10px;max-width:600px;">
+      <div class="input-group" style="height:42px;">
+        <span class="input-group-text d-flex align-items-center"><i class="ni ni-zoom-split-in"></i></span>
+        <input type="text" name="name" class="form-control" placeholder="Search by name" value="{{ request.GET.name }}">
+      </div>
+      <button class="btn btn-primary d-flex align-items-center" style="height:42px;">Search</button>
+    </form>
+
+    <a href="{% url 'tasks:team-create' %}" class="btn btn-success d-flex align-items-center justify-content-center" style="height:42px;">
+      <i class="ni ni-fat-add me-1"></i> Create
+    </a>
+  </div>
+</div>
+
+ <!-- Table Section -->
+<div class="container my-5 px-3">
+  <div class="card shadow" style="border-radius:12px;">
+    <div class="card-body p-4">
+      <div class="table-responsive">
+        <h4 class="mb-4">Teams</h4>
+        <table class="table mb-0" style="border-collapse:separate;border-spacing:0 .5rem;">
+          <thead class="bg-light">
+            <tr>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Name</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Lead</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Members</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3">Description</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for t in team_list %}
+            <tr class="align-middle" style="background:#fff;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,.05);">
+              <td class="px-3 py-3">
+                <a href="{% url 'tasks:team-detail' pk=t.id %}" class="text-dark text-sm fw-bold text-decoration-none">{{ t.name }}</a>
+              </td>
+              <td class="px-3 py-3 text-sm">{{ t.lead.username }}</td>
+              <td class="px-3 py-3">
+              {% with total=t.members.count %}
+                {% for m in t.members.all|slice:":3" %}
+                  <span class="badge bg-secondary text-xs me-1">{{ m.username }}</span>
+                {% empty %}
+                  <span class="text-muted text-sm">—</span>
+                {% endfor %}
+                {% if total > 3 %}
+                  <span class="badge bg-light text-dark text-xs">+{{ total|add:"-3" }}</span>
+                {% endif %}
+              {% endwith %}
+            </td>
+              <td class="px-3 py-3 text-sm text-secondary">{{ t.description|default:"—" }}</td>
+              <td class="px-3 py-3 text-center">
+                <a href="{% url 'tasks:team-detail' pk=t.id %}" class="text-info fw-bold text-decoration-none" style="font-size:.875rem;">View</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="5" class="text-center text-muted py-5">No teams found</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

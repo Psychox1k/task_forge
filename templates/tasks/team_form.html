@@ -1,0 +1,35 @@
+{% extends 'layouts/base-presentation.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block select2_css %}
+  <link href="{% static 'assets/css/select2-theme.css' %}" rel="stylesheet" />
+{% endblock select2_css %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header text-white">
+          <h4 class="mb-0">{{ object|yesno:"Update,Create" }} Team</h4>
+        </div>
+        <div class="card-body">
+          <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <input type="submit" value="Submit" class="btn btn-primary">
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block select2_js %}
+  <script src="{% static 'assets/js/additional/select2.js' %}"></script>
+{% endblock select2_js %}
