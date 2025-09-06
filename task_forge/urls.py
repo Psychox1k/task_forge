@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from task_forge.settings import BASE_DIR
+from task_forge.settings.base import BASE_DIR
 
 
 urlpatterns = [
