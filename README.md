@@ -1,6 +1,8 @@
-# Task Forge
+## Task Forge
 Task Forge is a Django application for project and task management in IT teams.
 
+## Check it out!
+[Task Forge project deployed to Render](https://task-forge-qrzz.onrender.com/)
 ## Features
 - Manage users (Workers with Positions)
 - Create and manage projects
@@ -34,6 +36,10 @@ python manage.py runserver
 ```bash
 python manage.py test
 ```
+## Test User
+
+> **Login:** user  
+> **Password:** user1234
 
 ## Authors
 - [Psychox1k](https://github.com/Psychox1k)(Kyrylo Zhyhariev)
